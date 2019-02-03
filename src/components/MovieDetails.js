@@ -34,7 +34,7 @@ export const MovieDetails = ({ movie, onClick }) => {
       onClick={onClick}
     >
       <h2 className="title">{movie.title}</h2>
-      <span className="runtime">{movie.runtime}</span>
+      <span className="runtime">{movie.runtime} mins</span>
       <span className="info">
         {movie.director && `${movie.director}, `}
         {movie.country} {movie.year}
