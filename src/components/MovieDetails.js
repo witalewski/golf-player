@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "@emotion/styled";
+import { formatRuntime } from "../utils/runtimeFormatter";
 
 const MovieDetailsStyled = styled.div`
-    display: none;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+  display: none;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 
   .title {
     margin: 1rem 1rem;
@@ -34,7 +35,7 @@ export const MovieDetails = ({ movie, onClick }) => {
       onClick={onClick}
     >
       <h2 className="title">{movie.title}</h2>
-      <span className="runtime">{movie.runtime} mins</span>
+      <span className="runtime">{formatRuntime(movie.runtime)}</span>
       <span className="info">
         {movie.director && `${movie.director}, `}
         {movie.country} {movie.year}
