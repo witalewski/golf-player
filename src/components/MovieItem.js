@@ -78,13 +78,9 @@ export class MovieItem extends Component {
         }
       )
       .then(({ data: { omdb, theMovieDb } }) => {
-        if (theMovieDb.details.status_code === 25) {
-          setTimeout(this.downloadData, 1000);
-        } else {
-          this.setState({
-            movie: getMovieFromDbData(omdb, theMovieDb)
-          });
-        }
+        this.setState({
+          movie: getMovieFromDbData(omdb, theMovieDb)
+        });
       });
   };
 
