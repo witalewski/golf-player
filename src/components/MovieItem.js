@@ -22,13 +22,6 @@ const MovieItemStyled = styled.li`
   transform: scale(1);
   transition: 0.2s;
 
-  .movieDetails {
-    display: none;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
-
   &:hover {
     transform: scale(1.1);
     transition: 0.2s;
@@ -43,24 +36,6 @@ const MovieItemStyled = styled.li`
       background-blend-mode: multiply;
       background-color: #333;
     }
-  }
-
-  .title {
-    margin: 1rem 1rem;
-    font-size: 24px;
-  }
-
-  .runtime,
-  .info {
-    margin: 1rem 1rem;
-    font-size: 16px;
-  }
-
-  .plot {
-    margin: 1rem 1rem;
-    font-size: 16px;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 `;
 
