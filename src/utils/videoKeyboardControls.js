@@ -1,4 +1,4 @@
-export const handleKeyDown = (keyCode, videoEl) => {
+export const handleKey = (keyCode, videoEl) => {
   switch (keyCode) {
     case "Space":
       if (videoEl.paused) {

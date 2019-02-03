@@ -78,13 +78,17 @@ export class MovieItem extends Component {
     };
   }
   componentDidMount() {
+    this.downloadData();
+  }
+
+  downloadData = () => {
     const { title, year } = parseDirectoryName(this.props.directoryName);
     this.setState({ title, year });
     axios
       .post(
         "https://qw6c0mxwz9.execute-api.eu-west-1.amazonaws.com/default/lightswitch",
         JSON.stringify({
-          title,
+          title: title.replace(/[^a-zA-Z0-9\s]/g, ""),
           year
         }),
         {
@@ -95,18 +99,30 @@ export class MovieItem extends Component {
         }
       )
       .then(({ data: { omdb, theMovieDb } }) => {
-        this.setState({
-          title: omdb.Title || theMovieDb.details.title,
-          runtime: parseInt(omdb.Runtime || theMovieDb.details.runtime),
-          director: omdb.Director,
-          country: omdb.Country || theMovieDb.details.production_countries.map(country => country.name).join(', '),
-          year: parseInt(omdb.Year || theMovieDb.details.release_date),
-          plot: omdb.Plot || theMovieDb.details.overview,
-          poster: omdb.Poster || theMovieDb.details.poster_path,
-          backdrop: theMovieDb.details.backdrop_path || omdb.Poster || theMovieDb.details.poster_path,
-        });
+        if (theMovieDb.details.status_code === 25) {
+          setTimeout(this.downloadData,1000);
+        } else {
+          this.setState({
+            title: omdb.Title || theMovieDb.details.title,
+            runtime: parseInt(omdb.Runtime || theMovieDb.details.runtime),
+            director: omdb.Director,
+            country:
+              omdb.Country ||
+              theMovieDb.details.production_countries
+                .map(country => country.name)
+                .join(", "),
+            year: parseInt(omdb.Year || theMovieDb.details.release_date),
+            plot: omdb.Plot || theMovieDb.details.overview,
+            poster: omdb.Poster || theMovieDb.details.poster_path,
+            backdrop:
+              theMovieDb.details.backdrop_path ||
+              omdb.Poster ||
+              theMovieDb.details.poster_path
+          });
+        }
       });
   }
+
   render() {
     const {
       title,
