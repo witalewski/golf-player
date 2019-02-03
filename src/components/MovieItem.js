@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import styled from "@emotion/styled";
 import { parseDirectoryName } from "../utils/directoryNameParser";
 import axios from "axios";
+import { MovieDetails } from "./MovieDetails";
 
 const MovieItemStyled = styled.li`
   display: block;
@@ -66,15 +67,17 @@ export class MovieItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: "",
-      director: "",
-      country: "",
-      year: NaN,
-      poster: "",
-      backdrop: "",
-      runtime: "",
-      plot: "",
-      movieNotFound: false
+      movie: {
+        title: "",
+        director: "",
+        country: "",
+        year: NaN,
+        poster: "",
+        backdrop: "",
+        runtime: "",
+        plot: "",
+        movieNotFound: false
+      }
     };
   }
   componentDidMount() {
@@ -100,55 +103,36 @@ export class MovieItem extends Component {
       )
       .then(({ data: { omdb, theMovieDb } }) => {
         if (theMovieDb.details.status_code === 25) {
-          setTimeout(this.downloadData,1000);
+          setTimeout(this.downloadData, 1000);
         } else {
           this.setState({
-            title: omdb.Title || theMovieDb.details.title,
-            runtime: parseInt(omdb.Runtime || theMovieDb.details.runtime),
-            director: omdb.Director,
-            country:
-              omdb.Country ||
-              theMovieDb.details.production_countries
-                .map(country => country.name)
-                .join(", "),
-            year: parseInt(omdb.Year || theMovieDb.details.release_date),
-            plot: omdb.Plot || theMovieDb.details.overview,
-            poster: omdb.Poster || theMovieDb.details.poster_path,
-            backdrop:
-              theMovieDb.details.backdrop_path ||
-              omdb.Poster ||
-              theMovieDb.details.poster_path
+            movie: {
+              title: omdb.Title || theMovieDb.details.title,
+              runtime: parseInt(omdb.Runtime || theMovieDb.details.runtime),
+              director: omdb.Director,
+              country:
+                omdb.Country ||
+                theMovieDb.details.production_countries
+                  .map(country => country.name)
+                  .join(", "),
+              year: parseInt(omdb.Year || theMovieDb.details.release_date),
+              plot: omdb.Plot || theMovieDb.details.overview,
+              poster: omdb.Poster || theMovieDb.details.poster_path,
+              backdrop:
+                theMovieDb.details.backdrop_path ||
+                omdb.Poster ||
+                theMovieDb.details.poster_path
+            }
           });
         }
       });
-  }
+  };
 
   render() {
-    const {
-      title,
-      runtime,
-      director,
-      country,
-      year,
-      plot,
-      poster,
-      backdrop
-    } = this.state;
+    const { movie } = this.state;
     return (
-      <MovieItemStyled style={{ backgroundImage: `url(${poster})` }}>
-        <div
-          className="movieDetails"
-          style={{ backgroundImage: `url(${backdrop})` }}
-          onClick={this.props.onClick}
-        >
-          <h2 className="title">{title}</h2>
-          <span className="runtime">{runtime}</span>
-          <span className="info">
-            {director && `${director}, `}
-            {country} {year}
-          </span>
-          <span className="plot">{plot}</span>
-        </div>
+      <MovieItemStyled style={{ backgroundImage: `url(${movie.poster})` }}>
+        <MovieDetails onClick={this.props.onClick} movie={movie} />
       </MovieItemStyled>
     );
   }
