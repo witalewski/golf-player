@@ -3,14 +3,14 @@ import ReactDOM from "react-dom";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import os from "os";
-import { getMovieDirs, getMovieFile } from "./utils/directoryScanner";
-import { reducers } from "./state/reducers";
-import { receiveDirectories } from "./state/actions/movieActions";
-import { MainConnected } from "./components/Main";
 import axios from "axios";
+import { MainConnected } from "./components/Main";
+import { receiveDirectories } from "./state/actions/movieActions";
+import { receiveDetails } from "./state/actions/movieActions";
+import { reducers } from "./state/reducers";
+import { getMovieDirs, getMovieFile } from "./utils/directoryScanner";
 import { parseDirectoryName } from "./utils/directoryNameParser";
 import { getMovieFromDbData } from "./utils/movieDataConverter";
-import { receiveDetails } from "./state/actions/movieActions";
 
 const store = createStore(reducers);
 
