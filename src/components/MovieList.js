@@ -17,7 +17,7 @@ const MovieListStyled = styled.ul`
   background-color: rgb(20, 20, 20);
 `;
 
-export const MovieList = ({ movies, playMovie, receiveDetails }) => (
+export const MovieList = ({ movies, playMovie }) => (
   <MovieListStyled>
     {movies.map(movie => (
       <MovieItem
@@ -35,7 +35,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  playMovie: movie => dispatch(playMovie(movie)),
+  playMovie: movie => dispatch(playMovie(movie))
 });
 
 export const MovieListConnected = connect(
