@@ -1,12 +1,9 @@
 import React, { Component, createRef } from "react";
 import { connect } from "react-redux";
 
-import os from "os";
-import fs from "fs";
 // const { exec } from "child_process");
 import { handleKey } from "../utils/videoKeyboardControls";
 import { getSubsForMovie } from "../utils/subtitles";
-import { getMovieFilePath } from "../utils/directoryScanner";
 import { MoviePlayerStyled } from "./MoviePlayerStyled";
 import { MoviePlayerControls } from "./MoviePlayerControls";
 import { exitPlayer } from "../state/actions/moviePlayerActions";
@@ -15,7 +12,6 @@ export class MoviePlayer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      movieFilePath: "",
       subtitlesFiles: [],
       notification: "",
       displayControls: false
@@ -29,14 +25,7 @@ export class MoviePlayer extends Component {
   componentDidMount() {
     this.showControls();
 
-    const movieFilePath = getMovieFilePath(
-      `${os.homedir()}/Movies/${this.props.movie.directoryName}`
-    );
-    this.setState({
-      movieFilePath
-    });
-
-    getSubsForMovie(movieFilePath, this.props.movie.directoryName).then(results =>
+    getSubsForMovie(this.props.movie.filePath, this.props.movie.directoryName).then(results =>
       this.setState({
         subtitlesFiles: results
       })
@@ -83,7 +72,6 @@ export class MoviePlayer extends Component {
 
   render() {
     const {
-      movieFilePath,
       subtitlesFiles,
       notification,
       displayControls
@@ -92,7 +80,7 @@ export class MoviePlayer extends Component {
     return (
       <MoviePlayerStyled>
         <video className="moviePlayer" ref={this.videoRef} controls autoPlay>
-          <source src={`file:///${movieFilePath}`} />
+          <source src={`file:///${movie.filePath}`} />
           {subtitlesFiles.map((subtitles, i) => {
             const subtitlesPathElements = subtitles.vttPath.split("/");
             return (
@@ -112,7 +100,7 @@ export class MoviePlayer extends Component {
         <aside className="notificationArea">{notification}</aside>
         {displayControls && (
           <MoviePlayerControls
-            movieFilePath={movieFilePath}
+            movieFilePath={movie.filePath}
             exitPlayer={() => exitPlayer()}
           />
         )}

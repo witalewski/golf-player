@@ -2,7 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
-import { getMovieDirs } from "./utils/directoryScanner";
+import os from "os";
+import { getMovieDirs, getMovieFilePath } from "./utils/directoryScanner";
 import { reducers } from "./state/reducers";
 import { receiveDirectories } from "./state/actions/movieActions";
 import { MainConnected } from "./components/Main";
@@ -35,7 +36,8 @@ getMovieDirs().then(directories => {
       .then(({ data: { omdb, theMovieDb } }) => {
         const movie = {
           ...getMovieFromDbData(omdb, theMovieDb),
-          directoryName: directoryName
+          directoryName: directoryName,
+          filePath: getMovieFilePath(`${os.homedir()}/Movies/${directoryName}`)
         };
         store.dispatch(receiveDetails(movie));
       });
