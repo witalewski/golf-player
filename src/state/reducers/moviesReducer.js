@@ -1,8 +1,9 @@
+import { List } from "immutable";
 import { RECEIVE_DIRECTORIES, RECEIVE_DETAILS } from "../actions/movieActions";
 
 const initialState = {
   directories: [],
-  movies: []
+  movies: List()
 };
 
 export const moviesReducer = (state = initialState, action) => {
@@ -13,10 +14,12 @@ export const moviesReducer = (state = initialState, action) => {
         directories: action.directories
       };
     case RECEIVE_DETAILS:
-      console.log([...state.movies, action.details]);
+      const movies = state.movies
+        .push(action.details)
+        .sort((m1, m2) => m1.title.localeCompare(m2.title));
       return {
         ...state,
-        movies: [...state.movies, action.details]
+        movies
       };
     default:
       return state;
