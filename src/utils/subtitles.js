@@ -6,15 +6,15 @@ import srt2vtt from "srt2vtt";
 import ass2vtt from "ass-to-vtt";
 
 const searchForSubs = async (movieFilePath, language = "") => {
-  const token = await opensubtitles.api.login();
-  const results = await opensubtitles.api.searchForFile(
-    token,
-    language,
-    movieFilePath
-  );
-  return results.filter(
-    item => item.LanguageName === "English" || item.LanguageName === "Polish"
-  );
+    const token = await opensubtitles.api.login();
+    const results = await opensubtitles.api.searchForFile(
+      token,
+      language,
+      movieFilePath
+    );
+    return results.filter(
+      item => item.LanguageName === "English" || item.LanguageName === "Polish"
+    );
 };
 
 const downloadSubs = (subsResult, dirname) =>

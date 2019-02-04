@@ -8,17 +8,27 @@ import { handleKey } from "../utils/videoKeyboardControls";
 import { getSubsForMovie } from "../utils/subtitles";
 import { getMovieFilePath } from "../utils/directoryScanner";
 import { MoviePlayerStyled } from "./MoviePlayerStyled";
+import { MoviePlayerControls } from "./MoviePlayerControls";
+import { exitPlayer } from "../state/actions/moviePlayerActions";
 
 export class MoviePlayer extends Component {
   constructor(props) {
     super(props);
-    this.state = { movieFilePath: "", subtitlesFiles: [], notification: "" };
+    this.state = {
+      movieFilePath: "",
+      subtitlesFiles: [],
+      notification: "",
+      displayControls: false
+    };
     this.videoRef = createRef();
   }
 
   notificationTimeout = 0;
+  controlsTimeout = 0;
 
   componentDidMount() {
+    this.showControls();
+
     const movieFilePath = getMovieFilePath(
       `${os.homedir()}/Movies/${this.props.movie}`
     );
@@ -33,6 +43,12 @@ export class MoviePlayer extends Component {
     );
 
     window.addEventListener("keydown", this.onKeyDown);
+    window.addEventListener("mousemove", this.onMouseMove);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("keydown", this.onKeyDown);
+    window.removeEventListener("mousemove", this.onMouseMove);
   }
 
   showNotification = notification => {
@@ -46,12 +62,33 @@ export class MoviePlayer extends Component {
     );
   };
 
+  showControls = () => {
+    if (this.controlsTimeout > 0) {
+      clearTimeout(this.controlsTimeout);
+    }
+    this.setState({ displayControls: true });
+    this.controlsTimeout = setTimeout(
+      () => this.setState({ displayControls: false }),
+      3000
+    );
+  };
+
   onKeyDown = event => {
     handleKey(event.code, this.videoRef.current, this.showNotification);
   };
 
+  onMouseMove = event => {
+    this.showControls();
+  };
+
   render() {
-    const { movieFilePath, subtitlesFiles, notification } = this.state;
+    const {
+      movieFilePath,
+      subtitlesFiles,
+      notification,
+      displayControls
+    } = this.state;
+    const { movie, exitPlayer } = this.props;
     return (
       <MoviePlayerStyled>
         <video className="moviePlayer" ref={this.videoRef} controls autoPlay>
@@ -73,6 +110,12 @@ export class MoviePlayer extends Component {
           )}
         </video>
         <aside className="notificationArea">{notification}</aside>
+        {displayControls && (
+          <MoviePlayerControls
+            movieFilePath={movieFilePath}
+            exitPlayer={() => exitPlayer()}
+          />
+        )}
       </MoviePlayerStyled>
     );
   }
@@ -82,7 +125,9 @@ const mapStateToProps = state => ({
   movie: state.moviePlayer.movie
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = dispatch => ({
+  exitPlayer: () => dispatch(exitPlayer())
+});
 
 export const MoviePlayerConnected = connect(
   mapStateToProps,
