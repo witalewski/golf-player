@@ -7,6 +7,7 @@ export const getMovieFromDbData = (
     Year: string;
     Plot: string;
     Poster: string;
+    imdbRating: string;
   },
   theMovieDb: {
     details: {
@@ -16,6 +17,7 @@ export const getMovieFromDbData = (
       overview: string;
       poster_path: string;
       backdrop_path: string;
+      vote_average: string;
     };
   }
 ): {
@@ -23,7 +25,9 @@ export const getMovieFromDbData = (
   runtime: number;
   director: string;
   country: string;
+  imdbRating: number;
   year: number;
+  releaseDate: Date;
   plot: string;
   poster: string;
   backdrop: string;
@@ -32,7 +36,9 @@ export const getMovieFromDbData = (
   runtime: parseInt(omdb.Runtime || theMovieDb.details.runtime),
   director: omdb.Director,
   country: omdb.Country,
+  imdbRating: parseFloat(omdb.imdbRating || theMovieDb.details.vote_average),
   year: parseInt(omdb.Year || theMovieDb.details.release_date),
+  releaseDate: new Date(theMovieDb.details.release_date),
   plot: omdb.Plot || theMovieDb.details.overview,
   poster: omdb.Poster || theMovieDb.details.poster_path,
   backdrop:

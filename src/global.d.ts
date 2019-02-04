@@ -3,7 +3,9 @@ interface Movie {
   runtime: number;
   director: string;
   country: string;
+  imdbRating: number;
   year: number;
+  releaseDate: Date;
   plot: string;
   poster: string;
   backdrop: string;
@@ -11,6 +13,7 @@ interface Movie {
   filePath: string;
   directoryName: string;
   directoryPath: string;
+  dateModified: Date;
 }
 
 interface Subtitles {

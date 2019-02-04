@@ -34,14 +34,16 @@ export const getMovieFile = (
   filePath: string;
   fileSize: number;
   fileName: string;
+  dateModified: Date;
 } => {
   const filesInDirectory = fs.readdirSync(dirpath).map(fileName => {
     const filePath = `${dirpath}/${fileName}`;
-    const { size: fileSize } = fs.statSync(filePath);
+    const { size: fileSize, mtime: dateModified } = fs.statSync(filePath);
     return {
       filePath,
       fileSize,
-      fileName
+      fileName,
+      dateModified
     };
   });
   if (filesInDirectory.length) {
