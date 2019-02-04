@@ -30,13 +30,13 @@ export class MoviePlayer extends Component {
     this.showControls();
 
     const movieFilePath = getMovieFilePath(
-      `${os.homedir()}/Movies/${this.props.movie}`
+      `${os.homedir()}/Movies/${this.props.movie.directoryName}`
     );
     this.setState({
       movieFilePath
     });
 
-    getSubsForMovie(movieFilePath, this.props.movie).then(results =>
+    getSubsForMovie(movieFilePath, this.props.movie.directoryName).then(results =>
       this.setState({
         subtitlesFiles: results
       })

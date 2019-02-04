@@ -24,7 +24,7 @@ export const MovieList = ({ movies, playMovie }) => (
         key={movie.directoryName}
         movie={movie}
         directoryName={movie.directoryName}
-        onClick={() => playMovie(directoryName)}
+        onClick={() => playMovie(movie)}
       />
     ))}
   </MovieListStyled>
