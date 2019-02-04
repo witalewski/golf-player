@@ -34,7 +34,7 @@ export const getMovieFile = dirpath => {
   });
   if (filesInDirectory.length) {
     return List(filesInDirectory)
-      .sort((a, b) => b.size - a.size)
+      .sort((a, b) => b.fileSize - a.fileSize)
       .get(0);
   }
 };

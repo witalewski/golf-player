@@ -6,28 +6,24 @@ import srt2vtt from "srt2vtt";
 import ass2vtt from "ass-to-vtt";
 
 const searchForSubs = async (movieFilePath, language = "") => {
-    const token = await opensubtitles.api.login();
-    const results = await opensubtitles.api.searchForFile(
-      token,
-      language,
-      movieFilePath
-    );
-    return results.filter(
-      item => item.LanguageName === "English" || item.LanguageName === "Polish"
-    );
+  const token = await opensubtitles.api.login();
+  const results = await opensubtitles.api.searchForFile(
+    token,
+    language,
+    movieFilePath
+  );
+  return results.filter(
+    item => item.LanguageName === "English" || item.LanguageName === "Polish"
+  );
 };
 
-const downloadSubs = (subsResult, dirname) =>
+const downloadSubs = (subsResult, directoryPath) =>
   new Promise((resolve, reject) => {
     fetch(subsResult.SubDownloadLink).then(res =>
       res.arrayBuffer().then(data => {
-        const gzPath = `${os.homedir()}/Movies/${dirname}/${
-          subsResult.SubFileName
-        }.gz`;
+        const gzPath = `${directoryPath}/${subsResult.SubFileName}.gz`;
         fs.writeFileSync(gzPath, new Buffer(data));
-        const subtitlesFile = `${os.homedir()}/Movies/${dirname}/${
-          subsResult.SubFileName
-        }`;
+        const subtitlesFile = `${directoryPath}/${subsResult.SubFileName}`;
         gunzip(gzPath, subtitlesFile, () => {
           fs.unlinkSync(gzPath);
           resolve({
@@ -39,34 +35,34 @@ const downloadSubs = (subsResult, dirname) =>
     );
   });
 
-const convertSubs = subtitlesFile =>
+const convertSubs = subtitlesItem =>
   new Promise((resolve, reject) => {
-    const vttPath = subtitlesFile.file.replace(/\.[^\.]*$/, ".vtt");
-    if (subtitlesFile.file.match(/srt$/)) {
-      var srtData = fs.readFileSync(subtitlesFile.file);
+    const vttPath = subtitlesItem.file.replace(/\.[^\.]*$/, ".vtt");
+    if (subtitlesItem.file.match(/srt$/)) {
+      var srtData = fs.readFileSync(subtitlesItem.file);
       srt2vtt(srtData, function(err, vttData) {
         if (err) {
           reject(err);
         }
         fs.writeFileSync(vttPath, vttData);
-        resolve({ vttPath, language: subtitlesFile.language });
+        resolve({ vttPath, language: subtitlesItem.language });
       });
-    } else if (subtitlesFile.file.match(/ass$/)) {
-      fs.createReadStream(subtitlesFile.file)
+    } else if (subtitlesItem.file.match(/ass$/)) {
+      fs.createReadStream(subtitlesItem.file)
         .pipe(ass2vtt())
         .pipe(fs.createWriteStream(vttPath));
-      resolve({ vttPath, language: subtitlesFile.language });
+      resolve({ vttPath, language: subtitlesItem.language });
     }
   });
 
-export const getSubsForMovie = async (movieFilePath, movieDirectoryPath) => {
+export const getSubsForMovie = async movie => {
   try {
-    const subsResults = await searchForSubs(movieFilePath);
+    const subsResults = await searchForSubs(movie.filePath);
     if (!subsResults) {
       return "";
     }
     const subtitlesFiles = await Promise.all(
-      subsResults.map(subsItem => downloadSubs(subsItem, movieDirectoryPath))
+      subsResults.map(subsItem => downloadSubs(subsItem, movie.directoryPath))
     );
     if (!subtitlesFiles) {
       return "";

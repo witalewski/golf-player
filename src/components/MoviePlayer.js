@@ -23,7 +23,7 @@ export class MoviePlayer extends Component {
   componentDidMount() {
     this.showControls();
 
-    getSubsForMovie(this.props.movie.filePath, this.props.movie.directoryName).then(results =>
+    getSubsForMovie(this.props.movie).then(results =>
       this.setState({
         subtitlesFiles: results
       })
