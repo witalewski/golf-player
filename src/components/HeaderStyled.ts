@@ -13,6 +13,11 @@ export const HeaderStyled = styled.header`
     margin: 3rem;
   }
 
+  span {
+    display: flex;
+    align-items: center;
+  }
+
   &:nth-child(1) {
     margin-left: 0;
   }
@@ -24,6 +29,11 @@ export const HeaderStyled = styled.header`
     font-size: 48px;
     color: ${colorPrimary};
     margin: 3rem;
+  }
+
+  label {
+    margin-left: 2rem;
+    margin-right: 10rem;
   }
 
   select {
