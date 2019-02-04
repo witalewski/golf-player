@@ -1,10 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
-import { MovieListConnected } from "./MovieList";
+import { LibraryConnected } from "./Library";
 import { MoviePlayerConnected } from "./MoviePlayer";
 
 export const Main = ({ moviePlayerIsOpen }) => {
-  return moviePlayerIsOpen ? <MoviePlayerConnected /> : <MovieListConnected />;
+  return moviePlayerIsOpen ? <MoviePlayerConnected /> : <LibraryConnected />;
 };
 
 const mapStateToProps = state => ({

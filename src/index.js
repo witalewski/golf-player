@@ -15,7 +15,6 @@ import { getMovieFromDbData } from "./utils/movieDataConverter";
 const store = createStore(reducers);
 
 getMovieDirs().then(directories => {
-  store.dispatch(receiveDirectories(directories));
   directories.forEach(({ directoryName, directoryPath }) => {
     const { title, year } = parseDirectoryName(directoryName);
     // this.setState({ title, year });
