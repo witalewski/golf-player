@@ -1,7 +1,5 @@
 import React, { Component, createRef } from "react";
 import { connect } from "react-redux";
-
-// const { exec } from "child_process");
 import { handleKey } from "../utils/videoKeyboardControls";
 import { getSubsForMovie } from "../utils/subtitles";
 import { MoviePlayerStyled } from "./MoviePlayerStyled";
