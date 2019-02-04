@@ -4,31 +4,37 @@ import { List } from "immutable";
 
 const removeHiddenDirs = items => items.filter(item => !item.match(/^\./));
 
-export const getMovieDirs = () =>
+export const getMovieDirs = (parentDirPath = `${os.homedir()}/Movies`) =>
   new Promise((resolve, reject) => {
-    fs.readdir(`${os.homedir()}/Movies`, (err, items) => {
+    fs.readdir(parentDirPath, (err, items) => {
       if (err) {
         reject(err);
       } else {
-        resolve(removeHiddenDirs(items));
+        resolve(
+          removeHiddenDirs(items).map(item => ({
+            directoryName: item,
+            directoryPath: `${parentDirPath}/${item}`
+          }))
+        );
       }
     });
   });
 
-export const getMovieFilePath = dirpath => {
+export const getMovieFile = dirpath => {
   const itemsInDirectory = fs.readdirSync(dirpath);
   const filesInDirectory = [];
-  itemsInDirectory.forEach(item => {
-    const path = `${dirpath}/${item}`;
-    const { size } = fs.statSync(path);
+  itemsInDirectory.forEach(fileName => {
+    const filePath = `${dirpath}/${fileName}`;
+    const { size: fileSize } = fs.statSync(filePath);
     filesInDirectory.push({
-      path,
-      size
+      filePath,
+      fileSize,
+      fileName
     });
   });
   if (filesInDirectory.length) {
     return List(filesInDirectory)
       .sort((a, b) => b.size - a.size)
-      .get(0).path;
+      .get(0);
   }
 };

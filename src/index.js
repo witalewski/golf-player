@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import os from "os";
-import { getMovieDirs, getMovieFilePath } from "./utils/directoryScanner";
+import { getMovieDirs, getMovieFile } from "./utils/directoryScanner";
 import { reducers } from "./state/reducers";
 import { receiveDirectories } from "./state/actions/movieActions";
 import { MainConnected } from "./components/Main";
@@ -16,7 +16,7 @@ const store = createStore(reducers);
 
 getMovieDirs().then(directories => {
   store.dispatch(receiveDirectories(directories));
-  directories.forEach(directoryName => {
+  directories.forEach(({ directoryName, directoryPath }) => {
     const { title, year } = parseDirectoryName(directoryName);
     // this.setState({ title, year });
     axios
@@ -36,8 +36,9 @@ getMovieDirs().then(directories => {
       .then(({ data: { omdb, theMovieDb } }) => {
         const movie = {
           ...getMovieFromDbData(omdb, theMovieDb),
-          directoryName: directoryName,
-          filePath: getMovieFilePath(`${os.homedir()}/Movies/${directoryName}`)
+          ...getMovieFile(`${os.homedir()}/Movies/${directoryName}`),
+          directoryName,
+          directoryPath
         };
         store.dispatch(receiveDetails(movie));
       });
