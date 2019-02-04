@@ -21,16 +21,14 @@ export const getMovieDirs = (parentDirPath = `${os.homedir()}/Movies`) =>
   });
 
 export const getMovieFile = dirpath => {
-  const itemsInDirectory = fs.readdirSync(dirpath);
-  const filesInDirectory = [];
-  itemsInDirectory.forEach(fileName => {
+  const filesInDirectory = fs.readdirSync(dirpath).map(fileName => {
     const filePath = `${dirpath}/${fileName}`;
     const { size: fileSize } = fs.statSync(filePath);
-    filesInDirectory.push({
+    return {
       filePath,
       fileSize,
       fileName
-    });
+    };
   });
   if (filesInDirectory.length) {
     return List(filesInDirectory)
