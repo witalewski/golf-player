@@ -1,24 +1,17 @@
 import { List } from "immutable";
-import { RECEIVE_DIRECTORIES, RECEIVE_DETAILS } from "../actions/movieActions";
+import { RECEIVE_DETAILS } from "../actions/movieActions";
 
 const initialState = {
-  directories: [],
   movies: List()
 };
 
-export const moviesReducer = (
+export const libraryReducer = (
   state = initialState,
   action
 ): {
-  directories: string[];
   movies: List<Movie>;
 } => {
   switch (action.type) {
-    case RECEIVE_DIRECTORIES:
-      return {
-        ...state,
-        directories: action.directories
-      };
     case RECEIVE_DETAILS:
       const movies = state.movies
         .push(action.details)
