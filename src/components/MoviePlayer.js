@@ -4,27 +4,9 @@ import { connect } from "react-redux";
 import os from "os";
 import fs from "fs";
 // const { exec } from "child_process");
-import { List } from "immutable";
 import { handleKey } from "../utils/videoKeyboardControls";
-import {getSubsForMovie} from "../utils/subtitles"
-
-const getMovieFilePath = dirpath => {
-  const itemsInDirectory = fs.readdirSync(dirpath);
-  const filesInDirectory = [];
-  itemsInDirectory.forEach(item => {
-    const path = `${dirpath}/${item}`;
-    const { size } = fs.statSync(path);
-    filesInDirectory.push({
-      path,
-      size
-    });
-  });
-  if (filesInDirectory.length) {
-    return List(filesInDirectory)
-      .sort((a, b) => b.size - a.size)
-      .get(0).path;
-  }
-};
+import { getSubsForMovie } from "../utils/subtitles";
+import { getMovieFilePath } from "../utils/directoryScanner";
 
 export class MoviePlayer extends Component {
   constructor(props) {
