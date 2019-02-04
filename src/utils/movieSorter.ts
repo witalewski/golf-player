@@ -9,7 +9,9 @@ export const sortMovies = (
     case SortOrder.Alphabetically:
       return movies.sort((m1, m2) => m1.title.localeCompare(m2.title));
     case SortOrder.Rating:
-      return movies.sort((m1, m2) => m2.imdbRating - m1.imdbRating);
+      return movies.sort(
+        (m1, m2) => (m2.imdbRating || 5) - (m1.imdbRating || 5)
+      );
     case SortOrder.ReleaseDate:
       return movies.sort(
         (m1, m2) => m2.releaseDate.getTime() - m1.releaseDate.getTime()
