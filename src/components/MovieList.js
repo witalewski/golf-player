@@ -21,9 +21,9 @@ const mapStateToProps = state => ({
   movies: state.movies.movies
 });
 
-const mapDispatchToProps = dispatch => ({
-  playMovie: movie => dispatch(playMovie(movie))
-});
+const mapDispatchToProps = {
+  playMovie
+};
 
 export const MovieListConnected = connect(
   mapStateToProps,

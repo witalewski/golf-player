@@ -109,9 +109,9 @@ const mapStateToProps = state => ({
   movie: state.moviePlayer.movie
 });
 
-const mapDispatchToProps = dispatch => ({
-  exitPlayer: () => dispatch(exitPlayer())
-});
+const mapDispatchToProps = {
+  exitPlayer
+};
 
 export const MoviePlayerConnected = connect(
   mapStateToProps,
