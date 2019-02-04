@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { colorPrimary } from "../styles/styleGlobals";
 
 export const MoviePlayerControlsStyled = styled.div`
-  /* display: flex; */
+  display: flex;
   position: absolute;
   top: 1rem;
   left: 1rem;

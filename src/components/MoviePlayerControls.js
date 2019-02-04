@@ -4,7 +4,7 @@ import { MoviePlayerControlsStyled } from "./MoviePlayerControlsStyled";
 
 export const MoviePlayerControls = ({ exitPlayer, movieFilePath }) => {
   return (
-    <MoviePlayerControlsStyled>
+    <MoviePlayerControlsStyled className="moviePlayerControls">
       <button onClick={exitPlayer}>
         <i className="fas fa-arrow-left" /> Back
       </button>

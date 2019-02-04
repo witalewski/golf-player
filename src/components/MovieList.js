@@ -10,7 +10,6 @@ export const MovieList = ({ movies, playMovie }) => (
       <MovieItem
         key={movie.directoryName}
         movie={movie}
-        directoryName={movie.directoryName}
         onClick={() => playMovie(movie)}
       />
     ))}
