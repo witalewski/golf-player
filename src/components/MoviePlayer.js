@@ -57,7 +57,7 @@ export class MoviePlayer extends Component {
   };
 
   onKeyDown = event => {
-    handleKey(event.code, this.videoRef.current, this.showNotification);
+    handleKey(event, this.videoRef.current, this.showNotification);
   };
 
   onMouseMove = event => {
