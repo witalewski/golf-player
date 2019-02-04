@@ -1,12 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
 import { LibraryStyled } from "./LibraryStyled";
+import { Header } from "./Header";
 import { playMovie } from "../state/actions/moviePlayerActions";
 import { MovieList } from "./MovieList";
 
 export const Library = ({ movies, playMovie }) => (
   <LibraryStyled>
-    <h1 className="appTitle">🏌🏿‍ Golf Player</h1>
+    <Header />
     <MovieList movies={movies} playMovie={playMovie} />
   </LibraryStyled>
 );

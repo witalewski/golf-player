@@ -8,10 +8,4 @@ export const LibraryStyled = styled.main`
   width: 100%;
   min-height: 100vh;
   background-color: rgb(20, 20, 20);
-
-  .appTitle {
-    font-size: 48px;
-    color: white;
-    margin: 3rem;
-  }
 `;
