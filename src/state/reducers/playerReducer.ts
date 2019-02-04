@@ -1,11 +1,11 @@
-import { PLAY_MOVIE, EXIT_PLAYER } from "../actions/moviePlayerActions";
+import { PLAY_MOVIE, EXIT_PLAYER } from "../actions/playerActions";
 
 const initialState = {
   isOpen: false,
   movie: ""
 };
 
-export const moviePlayerReducer = (state = initialState, action) => {
+export const playerReducer = (state = initialState, action) => {
   switch (action.type) {
     case PLAY_MOVIE:
       return {

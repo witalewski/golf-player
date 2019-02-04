@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
 
-import { moviesReducer } from "./moviesReducer";
-import { moviePlayerReducer } from "./moviePlayerReducer";
+import { libraryReducer } from "./libraryReducer";
+import { playerReducer } from "./playerReducer";
 
 export const reducers = combineReducers({
-  movies: moviesReducer,
-  moviePlayer: moviePlayerReducer
+  library: libraryReducer,
+  player: playerReducer
 });

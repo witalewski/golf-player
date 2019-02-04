@@ -8,7 +8,7 @@ export const Main = ({ moviePlayerIsOpen }) => {
 };
 
 const mapStateToProps = state => ({
-  moviePlayerIsOpen: state.moviePlayer.isOpen
+  moviePlayerIsOpen: state.player.isOpen
 });
 
 export const MainConnected = connect(mapStateToProps)(Main);

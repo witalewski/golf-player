@@ -4,7 +4,7 @@ import { handleKey } from "../utils/videoKeyboardControls";
 import { getSubsForMovie } from "../utils/subtitles";
 import { MoviePlayerStyled } from "./MoviePlayerStyled";
 import { MoviePlayerControls } from "./MoviePlayerControls";
-import { exitPlayer } from "../state/actions/moviePlayerActions";
+import { exitPlayer } from "../state/actions/playerActions";
 
 export class MoviePlayer extends Component<
   {
@@ -113,7 +113,7 @@ export class MoviePlayer extends Component<
 }
 
 const mapStateToProps = state => ({
-  movie: state.moviePlayer.movie
+  movie: state.player.movie
 });
 
 const mapDispatchToProps = {

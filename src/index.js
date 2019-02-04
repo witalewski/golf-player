@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import os from "os";
 import axios from "axios";
 import { MainConnected } from "./components/Main";
-import { receiveDetails } from "./state/actions/movieActions";
+import { receiveDetails } from "./state/actions/libraryActions";
 import { reducers } from "./state/reducers";
 import { getMovieDirs, getMovieFile } from "./utils/directoryScanner";
 import { parseDirectoryName } from "./utils/directoryNameParser";
