@@ -1,21 +1,8 @@
 import React from "react";
-import styled from "@emotion/styled";
 import { connect } from "react-redux";
+import { MovieListStyled } from "./MovieListStyled";
 import { MovieItem } from "./MovieItem";
 import { playMovie } from "../state/actions/moviePlayerActions";
-
-const MovieListStyled = styled.ul`
-  width: 100%;
-  height: 100%;
-  min-height: 100vh;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  background-color: rgb(20, 20, 20);
-`;
 
 export const MovieList = ({ movies, playMovie }) => (
   <MovieListStyled>
