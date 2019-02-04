@@ -8,4 +8,13 @@ export const MoviePlayerStyled = styled.div`
     width: 100vw;
     height: 100vh;
   }
+  .notificationArea {
+    position: absolute;
+    top: 3rem;
+    right: 3rem;
+    padding: 1rem;
+    color: white;
+    font-size: 32px;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
 `;

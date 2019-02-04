@@ -1,4 +1,6 @@
-export const handleKey = (keyCode, videoEl) => {
+import { formatTimecode } from "./timecodeFormatter";
+
+export const handleKey = (keyCode, videoEl, notificationFn) => {
   switch (keyCode) {
     case "Space":
       if (videoEl.paused) {
@@ -21,6 +23,7 @@ export const handleKey = (keyCode, videoEl) => {
       } else {
         videoEl.currentTime += 5;
       }
+      notificationFn(formatTimecode(videoEl.currentTime));
       break;
     case "ArrowLeft":
       if (event.shiftKey) {
@@ -36,12 +39,15 @@ export const handleKey = (keyCode, videoEl) => {
       } else {
         videoEl.currentTime -= 5;
       }
+      notificationFn(formatTimecode(videoEl.currentTime));
       break;
     case "ArrowUp":
       videoEl.volume = Math.min(videoEl.volume + 0.1, 1);
+      notificationFn(`Volume: ${Math.round(videoEl.volume * 100)}%`);
       break;
     case "ArrowDown":
       videoEl.volume = Math.max(videoEl.volume - 0.1, 0);
+      notificationFn(`Volume: ${Math.round(videoEl.volume * 100)}%`);
       break;
     case "KeyF":
       if (videoEl.webkitDisplayingFullscreen) {

@@ -12,9 +12,12 @@ import { MoviePlayerStyled } from "./MoviePlayerStyled";
 export class MoviePlayer extends Component {
   constructor(props) {
     super(props);
-    this.state = { movieFilePath: "", subtitlesFilePath: "" };
+    this.state = { movieFilePath: "", subtitlesFilePath: "", notification: "" };
     this.videoRef = createRef();
   }
+
+  notificationTimeout = 0;
+
   componentDidMount() {
     const movieFilePath = getMovieFilePath(
       `${os.homedir()}/Movies/${this.props.movie}`
@@ -32,12 +35,23 @@ export class MoviePlayer extends Component {
     window.addEventListener("keydown", this.onKeyDown);
   }
 
+  showNotification = notification => {
+    if (this.notificationTimeout > 0) {
+      clearTimeout(this.notificationTimeout);
+    }
+    this.setState({ notification });
+    this.notificationTimeout = setTimeout(
+      () => this.setState({ notification: "" }),
+      2000
+    );
+  };
+
   onKeyDown = event => {
-    handleKey(event.code, this.videoRef.current);
+    handleKey(event.code, this.videoRef.current, this.showNotification);
   };
 
   render() {
-    const { movieFilePath, subtitlesFilePath } = this.state;
+    const { movieFilePath, subtitlesFilePath, notification } = this.state;
     return (
       <MoviePlayerStyled>
         <video className="moviePlayer" ref={this.videoRef} controls autoPlay>
@@ -52,6 +66,7 @@ export class MoviePlayer extends Component {
             />
           )}
         </video>
+        <aside className="notificationArea">{notification}</aside>
       </MoviePlayerStyled>
     );
   }
