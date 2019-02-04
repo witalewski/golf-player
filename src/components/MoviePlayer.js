@@ -7,16 +7,12 @@ import { MoviePlayerControls } from "./MoviePlayerControls";
 import { exitPlayer } from "../state/actions/moviePlayerActions";
 
 export class MoviePlayer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      subtitlesFiles: [],
-      notification: "",
-      displayControls: false
-    };
-    this.videoRef = createRef();
-  }
-
+  state = {
+    subtitlesFiles: [],
+    notification: "",
+    displayControls: false
+  };
+  videoRef = createRef();
   notificationTimeout = 0;
   controlsTimeout = 0;
 
