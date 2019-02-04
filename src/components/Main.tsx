@@ -3,16 +3,12 @@ import { connect } from "react-redux";
 import { MovieListConnected } from "./MovieList";
 import { MoviePlayerConnected } from "./MoviePlayer";
 
-export const Main = ({ moviePlayer }) => {
-  return moviePlayer.isOpen ? (
-    <MoviePlayerConnected movie={moviePlayer.movie} />
-  ) : (
-    <MovieListConnected />
-  );
+export const Main = ({ moviePlayerIsOpen }) => {
+  return moviePlayerIsOpen ? <MoviePlayerConnected /> : <MovieListConnected />;
 };
 
 const mapStateToProps = state => ({
-  moviePlayer: state.moviePlayer
+  moviePlayerIsOpen: state.moviePlayer.isOpen
 });
 
 export const MainConnected = connect(mapStateToProps)(Main);

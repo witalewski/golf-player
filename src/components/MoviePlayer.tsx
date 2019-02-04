@@ -6,13 +6,24 @@ import { MoviePlayerStyled } from "./MoviePlayerStyled";
 import { MoviePlayerControls } from "./MoviePlayerControls";
 import { exitPlayer } from "../state/actions/moviePlayerActions";
 
-export class MoviePlayer extends Component {
+export class MoviePlayer extends Component<
+  {
+    movie: Movie;
+    exitPlayer: () => void;
+  },
+  {
+    subtitlesFiles: Subtitles[];
+    notification: string;
+    displayControls: boolean;
+  }
+> {
   state = {
     subtitlesFiles: [],
     notification: "",
     displayControls: false
   };
-  videoRef = createRef();
+
+  videoRef: React.RefObject<HTMLVideoElement> = createRef();
   notificationTimeout = 0;
   controlsTimeout = 0;
 
@@ -39,7 +50,7 @@ export class MoviePlayer extends Component {
       clearTimeout(this.notificationTimeout);
     }
     this.setState({ notification });
-    this.notificationTimeout = setTimeout(
+    this.notificationTimeout = window.setTimeout(
       () => this.setState({ notification: "" }),
       2000
     );
@@ -50,7 +61,7 @@ export class MoviePlayer extends Component {
       clearTimeout(this.controlsTimeout);
     }
     this.setState({ displayControls: true });
-    this.controlsTimeout = setTimeout(
+    this.controlsTimeout = window.setTimeout(
       () => this.setState({ displayControls: false }),
       3000
     );

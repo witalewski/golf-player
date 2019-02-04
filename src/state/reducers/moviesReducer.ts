@@ -6,7 +6,13 @@ const initialState = {
   movies: List()
 };
 
-export const moviesReducer = (state = initialState, action) => {
+export const moviesReducer = (
+  state = initialState,
+  action
+): {
+  directories: string[];
+  movies: List<Movie>;
+} => {
   switch (action.type) {
     case RECEIVE_DIRECTORIES:
       return {
