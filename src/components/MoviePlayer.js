@@ -61,7 +61,7 @@ export class MoviePlayer extends Component {
               src={subtitlesFilePath}
               kind="subtitles"
               label="English"
-              srclang="en"
+              srcLang="en"
               default
             />
           )}
