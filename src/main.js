@@ -1,5 +1,7 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow } = require("electron");
+const fs = require("fs");
+const os = require("os");
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -23,6 +25,11 @@ function createWindow() {
     // when you should delete the corresponding element.
     mainWindow = null;
   });
+
+  const reactDevToolsPath = `${os.homedir()}/Library/Application Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/3.6.0_0`;
+  if (fs.existsSync(reactDevToolsPath)) {
+    BrowserWindow.addDevToolsExtension(reactDevToolsPath);
+  }
 }
 
 // This method will be called when Electron has finished
