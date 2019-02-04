@@ -56,14 +56,20 @@ export class MoviePlayer extends Component {
       <MoviePlayerStyled>
         <video className="moviePlayer" ref={this.videoRef} controls autoPlay>
           <source src={`file:///${movieFilePath}`} />
-          {subtitlesFiles.map((subtitles, i) => (
-            <track
-              src={subtitles.vttPath}
-              kind="subtitles"
-              label={subtitles.language}
-              default={i === 0}
-            />
-          ))}
+          {subtitlesFiles.map((subtitles, i) => {
+            const subtitlesPathElements = subtitles.vttPath.split("/");
+            return (
+              <track
+                key={subtitles.vttPath}
+                src={subtitles.vttPath}
+                kind="subtitles"
+                label={`${subtitles.language} (${
+                  subtitlesPathElements[subtitlesPathElements.length - 1]
+                })`}
+                default={i === 0}
+              />
+            );
+          })}
           )}
         </video>
         <aside className="notificationArea">{notification}</aside>

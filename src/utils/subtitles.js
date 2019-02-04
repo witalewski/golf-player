@@ -55,7 +55,7 @@ const convertSubs = subtitlesFile =>
       fs.createReadStream(subtitlesFile.file)
         .pipe(ass2vtt())
         .pipe(fs.createWriteStream(vttPath));
-        resolve({ vttPath, language: subtitlesFile.language });
+      resolve({ vttPath, language: subtitlesFile.language });
     }
   });
 
