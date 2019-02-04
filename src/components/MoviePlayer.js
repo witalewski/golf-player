@@ -7,6 +7,7 @@ import fs from "fs";
 import { handleKey } from "../utils/videoKeyboardControls";
 import { getSubsForMovie } from "../utils/subtitles";
 import { getMovieFilePath } from "../utils/directoryScanner";
+import { MoviePlayerStyled } from "./MoviePlayerStyled";
 
 export class MoviePlayer extends Component {
   constructor(props) {
@@ -38,7 +39,7 @@ export class MoviePlayer extends Component {
   render() {
     const { movieFilePath, subtitlesFilePath } = this.state;
     return (
-      <div>
+      <MoviePlayerStyled>
         <video className="moviePlayer" ref={this.videoRef} controls autoPlay>
           <source src={`file:///${movieFilePath}`} />
           {subtitlesFilePath && (
@@ -51,7 +52,7 @@ export class MoviePlayer extends Component {
             />
           )}
         </video>
-      </div>
+      </MoviePlayerStyled>
     );
   }
 }
