@@ -5,7 +5,7 @@
   "main": "src/main.js",
   "scripts": {
     "start": "yarn build && electron .",
-    "build": "babel src -d lib --extensions \".ts,.js\""
+    "build": "babel src -d lib --extensions \".ts,.tsx,.js\""
   },
   "repository": "https://github.com/witalewski/golf-player",
   "keywords": [
