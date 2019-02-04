@@ -24,17 +24,21 @@ const yearPatternsGenerator = (): IYearPatternsGenerator => {
 const isPossibleMovieReleaseYear = (n: number): boolean =>
   n >= 1887 && n <= new Date().getFullYear() + 5;
 
-const testYearPattern = (name: string, pattern: RegExp): number =>
-  List(name.match(pattern))
-    .map((s: string) => parseInt(s))
-    .sort((a: number, b: number): number => b - a)
-    .find(isPossibleMovieReleaseYear);
+const testYearPattern = (name: string, pattern: RegExp): number => {
+  return (
+    List(name.match(pattern))
+      .map((s: string) => parseInt(s))
+      .sort((a: number, b: number): number => b - a)
+      .find(isPossibleMovieReleaseYear) || 0
+  );
+};
 
 const findYear = (name: string): number => {
   let year: number = 0;
   const yearPatterns: IYearPatternsGenerator = yearPatternsGenerator();
   while (year === 0 && yearPatterns.hasNext()) {
-    year = testYearPattern(name, yearPatterns.next());
+    const pattern = yearPatterns.next();
+    year = testYearPattern(name, pattern);
   }
   return year;
 };
