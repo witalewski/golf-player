@@ -35,10 +35,12 @@ export const MovieDetails = ({ movie, onClick }) => {
       onClick={onClick}
     >
       <h2 className="title">{movie.title}</h2>
-      <span className="runtime">{formatRuntime(movie.runtime)}</span>
+      {!Number.isNaN(movie.runtime) && movie.runtime && (
+        <span className="runtime">{formatRuntime(movie.runtime)}</span>
+      )}
       <span className="info">
         {movie.director && `${movie.director}, `}
-        {movie.country} {movie.year}
+        {movie.country} {movie.year ? movie.year : ""}
       </span>
       <span className="plot">{movie.plot}</span>
     </MovieDetailsStyled>

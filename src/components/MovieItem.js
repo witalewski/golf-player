@@ -13,10 +13,10 @@ export class MovieItem extends Component {
         title: "",
         director: "",
         country: "",
-        year: NaN,
+        year: 0,
         poster: "",
         backdrop: "",
-        runtime: "",
+        runtime: 0,
         plot: "",
         movieNotFound: false
       }
