@@ -12,7 +12,7 @@ import { MoviePlayerStyled } from "./MoviePlayerStyled";
 export class MoviePlayer extends Component {
   constructor(props) {
     super(props);
-    this.state = { movieFilePath: "", subtitlesFilePath: "", notification: "" };
+    this.state = { movieFilePath: "", subtitlesFiles: [], notification: "" };
     this.videoRef = createRef();
   }
 
@@ -26,9 +26,9 @@ export class MoviePlayer extends Component {
       movieFilePath
     });
 
-    getSubsForMovie(movieFilePath, this.props.movie).then(vttPath =>
+    getSubsForMovie(movieFilePath, this.props.movie).then(results =>
       this.setState({
-        subtitlesFilePath: vttPath
+        subtitlesFiles: results
       })
     );
 
@@ -51,19 +51,19 @@ export class MoviePlayer extends Component {
   };
 
   render() {
-    const { movieFilePath, subtitlesFilePath, notification } = this.state;
+    const { movieFilePath, subtitlesFiles, notification } = this.state;
     return (
       <MoviePlayerStyled>
         <video className="moviePlayer" ref={this.videoRef} controls autoPlay>
           <source src={`file:///${movieFilePath}`} />
-          {subtitlesFilePath && (
+          {subtitlesFiles.map((subtitles, i) => (
             <track
-              src={subtitlesFilePath}
+              src={subtitles.vttPath}
               kind="subtitles"
-              label="English"
-              srcLang="en"
-              default
+              label={subtitles.language}
+              default={i === 0}
             />
+          ))}
           )}
         </video>
         <aside className="notificationArea">{notification}</aside>
