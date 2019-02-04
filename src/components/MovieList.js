@@ -17,12 +17,13 @@ const MovieListStyled = styled.ul`
   background-color: rgb(20, 20, 20);
 `;
 
-export const MovieList = ({ directoryNames, playMovie }) => (
+export const MovieList = ({ movies, playMovie, receiveDetails }) => (
   <MovieListStyled>
-    {directoryNames.map(directoryName => (
+    {movies.map(movie => (
       <MovieItem
-        key={directoryName}
-        directoryName={directoryName}
+        key={movie.directoryName}
+        movie={movie}
+        directoryName={movie.directoryName}
         onClick={() => playMovie(directoryName)}
       />
     ))}
@@ -30,11 +31,11 @@ export const MovieList = ({ directoryNames, playMovie }) => (
 );
 
 const mapStateToProps = state => ({
-  directoryNames: state.movies.directories
+  movies: state.movies.movies
 });
 
 const mapDispatchToProps = dispatch => ({
-  playMovie: movie => dispatch(playMovie(movie))
+  playMovie: movie => dispatch(playMovie(movie)),
 });
 
 export const MovieListConnected = connect(

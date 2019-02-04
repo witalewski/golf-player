@@ -1,7 +1,8 @@
-import { RECEIVE_DIRECTORIES } from "../actions/movieActions";
+import { RECEIVE_DIRECTORIES, RECEIVE_DETAILS } from "../actions/movieActions";
 
 const initialState = {
-  directories: []
+  directories: [],
+  movies: []
 };
 
 export const moviesReducer = (state = initialState, action) => {
@@ -10,6 +11,12 @@ export const moviesReducer = (state = initialState, action) => {
       return {
         ...state,
         directories: action.directories
+      };
+    case RECEIVE_DETAILS:
+      console.log([...state.movies, action.details]);
+      return {
+        ...state,
+        movies: [...state.movies, action.details]
       };
     default:
       return state;
