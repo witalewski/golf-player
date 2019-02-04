@@ -69,11 +69,7 @@ export class MoviePlayer extends Component {
   };
 
   render() {
-    const {
-      subtitlesFiles,
-      notification,
-      displayControls
-    } = this.state;
+    const { subtitlesFiles, notification, displayControls } = this.state;
     const { movie, exitPlayer } = this.props;
     return (
       <MoviePlayerStyled>
@@ -95,7 +91,9 @@ export class MoviePlayer extends Component {
           })}
           )}
         </video>
-        <aside className="notificationArea">{notification}</aside>
+        {notification && (
+          <aside className="notificationArea">{notification}</aside>
+        )}
         {displayControls && (
           <MoviePlayerControls
             movieFilePath={movie.filePath}
