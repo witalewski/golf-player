@@ -18,7 +18,10 @@ interface MovieFile {
   directoryPath: string;
 }
 
-const loadMovieDetails = async (movieFile: MovieFile, dispatch) => {
+const loadMovieDetails = async (
+  movieFile: MovieFile,
+  dispatch: (action: { type: string }) => void
+) => {
   const { title, year } = parseDirectoryName(movieFile.directoryName);
   const {
     data: { omdb, theMovieDb }
