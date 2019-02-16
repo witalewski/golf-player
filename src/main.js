@@ -6,11 +6,24 @@ const os = require("os");
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
+let firstRun = true;
 
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({ width: 800, height: 600 });
   mainWindow.maximize();
+
+  if (firstRun) {
+    [
+      `${os.homedir()}/Library/Application Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/3.6.0_0`,
+      `${os.homedir()}/Library/Application Support/Google/Chrome/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.17.0_0`
+    ].forEach(extensionPath => {
+      if (fs.existsSync(extensionPath)) {
+        BrowserWindow.addDevToolsExtension(extensionPath);
+      }
+    });
+    firstRun = false;
+  }
 
   // and load the index.html of the app.
   mainWindow.loadFile("index.html");
@@ -25,11 +38,6 @@ function createWindow() {
     // when you should delete the corresponding element.
     mainWindow = null;
   });
-
-  const reactDevToolsPath = `${os.homedir()}/Library/Application Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/3.6.0_0`;
-  if (fs.existsSync(reactDevToolsPath)) {
-    BrowserWindow.addDevToolsExtension(reactDevToolsPath);
-  }
 }
 
 // This method will be called when Electron has finished

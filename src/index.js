@@ -7,16 +7,22 @@ import axios from "axios";
 import { MainConnected } from "./components/Main";
 import { receiveDetails } from "./state/actions/libraryActions";
 import { reducers } from "./state/reducers";
-import { getMovieDirs, getMovieFile } from "./utils/directoryScanner";
+import {
+  getMovieDirs,
+  getMovieFile,
+  scanDirectory
+} from "./utils/directoryScanner";
 import { parseDirectoryName } from "./utils/directoryNameParser";
 import { getMovieFromDbData } from "./utils/movieDataConverter";
 
-const store = createStore(reducers);
+const store = window.hasOwnProperty("__REDUX_DEVTOOLS_EXTENSION__")
+  ? createStore(reducers, window["__REDUX_DEVTOOLS_EXTENSION__"]())
+  : createStore(reducers);
 
 getMovieDirs().then(directories => {
-  directories.forEach(({ directoryName, directoryPath }) => {
-    const { title, year } = parseDirectoryName(directoryName);
-    // this.setState({ title, year });
+  console.log(directories);
+  directories.forEach(directory => {
+    const { title, year } = parseDirectoryName(directory.directoryName);
     axios
       .post(
         "https://qw6c0mxwz9.execute-api.eu-west-1.amazonaws.com/default/lightswitch",
@@ -34,12 +40,15 @@ getMovieDirs().then(directories => {
       .then(({ data: { omdb, theMovieDb } }) => {
         const movie = {
           ...getMovieFromDbData(omdb, theMovieDb),
-          ...getMovieFile(`${os.homedir()}/Movies/${directoryName}`),
-          directoryName,
-          directoryPath
+          ...directory
         };
-        store.dispatch(receiveDetails(movie));
-      });
+        if (movie.title) {
+          store.dispatch(receiveDetails(movie));
+        } else {
+          console.log("Couldn't find match for", title);
+        }
+      })
+      .catch(console.log);
   });
 });
 
