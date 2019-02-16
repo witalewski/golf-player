@@ -4,7 +4,7 @@ import axios from "axios";
 import { getUserVolumes } from "./volumesScanner";
 import { parseDirectoryName } from "./directoryNameParser";
 import { getMovieFromDbData } from "./movieDataConverter";
-import { API_URL, API_KEY } from "../global/constants";
+import { API_URL, API_KEY, MIN_MOVIE_FILE_SIZE } from "../global/constants";
 import { receiveMovie } from "../state/actions/libraryActions";
 
 interface MovieFile {
@@ -67,7 +67,7 @@ const scanDirectory = (
       }
       if (
         item.match(/(webm|ogg|mp4|avi|mov|flv|wmv|mkv)$/) &&
-        stats.size > 80 * 1024 * 1024
+        stats.size > MIN_MOVIE_FILE_SIZE
       ) {
         loadMovieDetails(
           {
