@@ -2,12 +2,11 @@ import React from "react";
 import { MovieDetailsStyled } from "./MovieDetailsStyled";
 import { formatRuntime } from "../utils/runtimeFormatter";
 
-export const MovieDetails = ({ movie, onClick }) => {
+export const MovieDetails = ({ movie, playMovie, playTrailer }) => {
   return (
     <MovieDetailsStyled
       className="movieDetails"
       style={{ backgroundImage: `url(${movie.backdrop})` }}
-      onClick={onClick}
     >
       <h2 className="title">{movie.title}</h2>
       {!Number.isNaN(movie.runtime) && movie.runtime && (
@@ -18,6 +17,16 @@ export const MovieDetails = ({ movie, onClick }) => {
         {movie.country} {movie.year ? movie.year : ""}
       </span>
       <span className="plot">{movie.plot}</span>
+      <span className="buttons">
+        {movie.trailer && (
+          <button onClick={playTrailer}>
+            <i className="fas fa-video" /> Trailer
+          </button>
+        )}
+        <button onClick={playMovie}>
+          <i className="fas fa-play" /> Watch
+        </button>
+      </span>
     </MovieDetailsStyled>
   );
 };

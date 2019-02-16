@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 export const MovieItemStyled = styled.li`
   display: block;
   flex-basis: 30rem;
+  flex-shrink: 0;
   height: 43rem;
   align-items: stretch;
   margin: 3rem;
@@ -13,13 +14,13 @@ export const MovieItemStyled = styled.li`
   color: white;
   overflow: hidden;
   text-overflow: ellipsis;
-  cursor: pointer;
   transform: scale(1);
   transition: 0.2s;
 
   &:hover {
     transform: scale(1.1);
     transition: 0.2s;
+    box-shadow: 0 1rem 1rem 1rem rgba(0, 0, 0, 0.2);
 
     .movieDetails {
       display: flex;

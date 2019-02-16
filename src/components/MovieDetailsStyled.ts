@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { colorPrimary } from "../styles/styleGlobals";
 
 export const MovieDetailsStyled = styled.div`
   display: none;
@@ -22,5 +23,21 @@ export const MovieDetailsStyled = styled.div`
     font-size: 16px;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: center;
+  }
+
+  button {
+    flex-basis: 50%;
+    margin: 1rem;
+    padding: 2rem;
+    color: white;
+    font-size: 18px;
+    border: none;
+    background-color: ${colorPrimary};
+    cursor: pointer;
   }
 `;

@@ -4,13 +4,14 @@ import { MovieListStyled } from "./MovieListStyled";
 import { MovieItem } from "./MovieItem";
 import { playMovie } from "../state/actions/playerActions";
 
-export const MovieList = ({ movies, playMovie }) => (
+export const MovieList = ({ movies, playMovie, playTrailer }) => (
   <MovieListStyled>
     {movies.map(movie => (
       <MovieItem
         key={movie.directoryName}
         movie={movie}
-        onClick={() => playMovie(movie)}
+        playMovie={() => playMovie(movie)}
+        playTrailer={() => playTrailer(movie.trailer)}
       />
     ))}
   </MovieListStyled>
