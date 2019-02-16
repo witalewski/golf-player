@@ -7,7 +7,7 @@ import { DEFAULT_DEPTH_LIMIT } from "../global/constants";
 import { parseDirectoryName } from "./directoryNameParser";
 import { getMovieFromDbData } from "./movieDataConverter";
 import { API_URL, API_KEY } from "../global/constants";
-import { receiveDetails } from "../state/actions/libraryActions";
+import { receiveMovie } from "../state/actions/libraryActions";
 
 interface MovieFile {
   filePath: string;
@@ -40,7 +40,7 @@ const loadMovieDetails = (movieFile, store) => {
         ...movieFile
       };
       if (movie.title) {
-        store.dispatch(receiveDetails(movie));
+        store.dispatch(receiveMovie(movie));
       } else {
         console.log("Couldn't find match for", title);
       }

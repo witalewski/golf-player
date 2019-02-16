@@ -1,5 +1,5 @@
 import { List } from "immutable";
-import { RECEIVE_DETAILS, SORT } from "../actions/libraryActions";
+import { RECEIVE_MOVIE, SORT } from "../actions/libraryActions";
 import { SortOrder } from "../../global/constants";
 import { sortMovies } from "../../utils/movieSorter";
 
@@ -16,14 +16,14 @@ export const libraryReducer = (
   sortOrder: SortOrder;
 } => {
   switch (action.type) {
-    case RECEIVE_DETAILS:
+    case RECEIVE_MOVIE:
       return {
         ...state,
         movies: state.movies.find(
-          movie => movie.fileName === action.details.fileName
+          movie => movie.fileName === action.movie.fileName
         )
           ? state.movies
-          : sortMovies(state.movies.push(action.details), state.sortOrder)
+          : sortMovies(state.movies.push(action.movie), state.sortOrder)
       };
     case SORT:
       return {
