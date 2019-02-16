@@ -6,6 +6,7 @@ import { parseDirectoryName } from "./directoryNameParser";
 import { getMovieFromDbData } from "./movieDataConverter";
 import { API_URL, API_KEY, MIN_MOVIE_FILE_SIZE } from "../global/constants";
 import { receiveMovie } from "../state/actions/libraryActions";
+import { logger } from "./logger";
 
 interface MovieFile {
   filePath: string;
@@ -42,7 +43,7 @@ const loadMovieDetails = async (movieFile: MovieFile, dispatch: Dispatch) => {
   if (movie.title) {
     dispatch(receiveMovie(movie));
   } else {
-    console.log("Couldn't find match for", title);
+    logger.error(`Couldn't find match for ${title}`);
   }
 };
 
@@ -62,7 +63,7 @@ const scanDirectory = (
   depthLimit: number,
   dispatch: Dispatch
 ): void => {
-  console.log("Scanning", `${path}/${directoryName}`);
+  logger.info(`Scanning ${path}/${directoryName}`);
   try {
     fs.readdirSync(`${path}/${directoryName}`).forEach(item => {
       const filePath = `${path}/${directoryName}/${item}`;

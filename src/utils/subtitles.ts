@@ -3,6 +3,7 @@ import opensubtitles from "subtitler";
 import gunzip from "gunzip-file";
 import srt2vtt from "srt2vtt";
 import ass2vtt from "ass-to-vtt";
+import { logger } from "./logger";
 
 interface ISubsSearchResult {
   LanguageName: string;
@@ -73,9 +74,7 @@ const convertSubs = (
     }
   });
 
-export const getSubsForMovie = async (
-  movie: Movie
-): Promise<Subtitles[]> => {
+export const getSubsForMovie = async (movie: Movie): Promise<Subtitles[]> => {
   try {
     const subsSearchResults: ISubsSearchResult[] = await searchForSubs(
       movie.filePath
@@ -95,7 +94,7 @@ export const getSubsForMovie = async (
       subsDownloadResults.map(file => convertSubs(file))
     );
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     return [];
   }
 };

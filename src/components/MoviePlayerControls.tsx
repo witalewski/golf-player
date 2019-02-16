@@ -1,6 +1,7 @@
 import React from "react";
 import { exec } from "child_process";
 import { MoviePlayerControlsStyled } from "./MoviePlayerControlsStyled";
+import { logger } from "../utils/logger";
 
 export const MoviePlayerControls = ({ exitPlayer, movieFilePath }) => {
   return (
@@ -10,7 +11,7 @@ export const MoviePlayerControls = ({ exitPlayer, movieFilePath }) => {
       </button>
       <button
         onClick={() => {
-          exec(`open "${movieFilePath}"`, console.log);
+          exec(`open "${movieFilePath}"`, logger.error);
         }}
       >
         Open in default player
