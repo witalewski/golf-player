@@ -14,6 +14,8 @@ interface Movie {
   directoryName: string;
   directoryPath: string;
   dateModified: Date;
+  genres: string[];
+  trailer: string;
 }
 
 interface Subtitles {
