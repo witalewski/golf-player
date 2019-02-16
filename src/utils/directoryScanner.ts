@@ -1,9 +1,7 @@
 import os from "os";
 import fs from "fs";
 import axios from "axios";
-import { List } from "immutable";
 import { getUserVolumes } from "./volumesScanner";
-import { DEFAULT_DEPTH_LIMIT } from "../global/constants";
 import { parseDirectoryName } from "./directoryNameParser";
 import { getMovieFromDbData } from "./movieDataConverter";
 import { API_URL, API_KEY } from "../global/constants";
