@@ -18,34 +18,32 @@ interface MovieFile {
   directoryPath: string;
 }
 
-const loadMovieDetails = (movieFile, store) => {
+const loadMovieDetails = async (movieFile, store) => {
   const { title, year } = parseDirectoryName(movieFile.directoryName);
-  axios
-    .post(
-      API_URL,
-      JSON.stringify({
-        title: title.replace(/[^a-zA-Z0-9\s]/g, ""),
-        year
-      }),
-      {
-        headers: {
-          "X-Api-Key": API_KEY,
-          "Content-Type": "application/json"
-        }
+  const {
+    data: { omdb, theMovieDb }
+  } = await axios.post(
+    API_URL,
+    JSON.stringify({
+      title: title.replace(/[^a-zA-Z0-9\s]/g, ""),
+      year
+    }),
+    {
+      headers: {
+        "X-Api-Key": API_KEY,
+        "Content-Type": "application/json"
       }
-    )
-    .then(({ data: { omdb, theMovieDb } }) => {
-      const movie = {
-        ...getMovieFromDbData(omdb, theMovieDb),
-        ...movieFile
-      };
-      if (movie.title) {
-        store.dispatch(receiveMovie(movie));
-      } else {
-        console.log("Couldn't find match for", title);
-      }
-    })
-    .catch(console.log);
+    }
+  );
+  const movie = {
+    ...getMovieFromDbData(omdb, theMovieDb),
+    ...movieFile
+  };
+  if (movie.title) {
+    store.dispatch(receiveMovie(movie));
+  } else {
+    console.log("Couldn't find match for", title);
+  }
 };
 
 export const scanDirectory = (
@@ -84,20 +82,14 @@ export const scanDirectory = (
   }
 };
 
-export const getMovieDirs = (depthLimit, store): Promise<MovieFile[]> =>
-  new Promise((resolve, reject) =>
-    getUserVolumes().then(volumes =>
-      resolve(
-        [
-          ...volumes.map(item => ["/Volumes", item]),
-          [os.homedir(), "Movies"],
-          [os.homedir(), "Downloads"]
-        ]
-          .map(([path, name]) => scanDirectory(path, name, depthLimit, store))
-          .reduce((a, b) => [...a, ...b], [])
-      )
-    )
-  );
+export const getMovieDirs = async (depthLimit, store): Promise<void> => {
+  const volumes = await getUserVolumes();
+  [
+    [os.homedir(), "Movies"],
+    [os.homedir(), "Downloads"],
+    ...volumes.map(item => ["/Volumes", item])
+  ].forEach(([path, name]) => scanDirectory(path, name, depthLimit, store));
+};
 
 export const getMovieFile = (
   dirpath: string
