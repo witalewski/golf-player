@@ -57,11 +57,5 @@ export const handleKey = (
     case "ArrowDown":
       setVolume(videoEl.volume - 0.1, videoEl, notificationFn);
       break;
-    case "KeyF":
-      if (videoEl.webkitDisplayingFullscreen) {
-        videoEl.webkitExitFullScreen();
-      } else {
-        videoEl.webkitEnterFullScreen();
-      }
   }
 };

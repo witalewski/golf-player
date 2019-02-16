@@ -17,4 +17,7 @@ export const MoviePlayerStyled = styled.div`
     font-size: 32px;
     background-color: rgba(0, 0, 0, 0.5);
   }
+  video::-webkit-media-controls-fullscreen-button {
+    display: none;
+  }
 `;

@@ -11,7 +11,7 @@ let firstRun = true;
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({ width: 800, height: 600 });
-  mainWindow.maximize();
+  mainWindow.setFullScreen(true);
 
   if (firstRun) {
     [
