@@ -18,7 +18,7 @@ interface MovieFile {
   directoryPath: string;
 }
 
-const loadMovieDetails = async (movieFile, dispatch) => {
+const loadMovieDetails = async (movieFile: MovieFile, dispatch) => {
   const { title, year } = parseDirectoryName(movieFile.directoryName);
   const {
     data: { omdb, theMovieDb }
@@ -46,7 +46,7 @@ const loadMovieDetails = async (movieFile, dispatch) => {
   }
 };
 
-export const scanDirectory = (
+const scanDirectory = (
   path: string,
   directoryName: string,
   depthLimit: number,
@@ -58,7 +58,12 @@ export const scanDirectory = (
       const filePath = `${path}/${directoryName}/${item}`;
       const stats: fs.Stats = fs.statSync(filePath);
       if (stats.isDirectory() && depthLimit > 0) {
-        scanDirectory(`${path}/${directoryName}`, item, depthLimit - 1, dispatch);
+        scanDirectory(
+          `${path}/${directoryName}`,
+          item,
+          depthLimit - 1,
+          dispatch
+        );
       }
       if (
         item.match(/(webm|ogg|mp4|avi|mov|flv|wmv|mkv)$/) &&
@@ -82,38 +87,11 @@ export const scanDirectory = (
   }
 };
 
-export const getMovieDirs = async (depthLimit, dispatch): Promise<void> => {
+export const searchForMovies = async (depthLimit, dispatch): Promise<void> => {
   const volumes = await getUserVolumes();
   [
     [os.homedir(), "Movies"],
     [os.homedir(), "Downloads"],
     ...volumes.map(item => ["/Volumes", item])
   ].forEach(([path, name]) => scanDirectory(path, name, depthLimit, dispatch));
-};
-
-export const getMovieFile = (
-  dirpath: string
-): {
-  filePath: string;
-  fileSize: number;
-  fileName: string;
-  dateModified: Date;
-} => {
-  const filesInDirectory = fs.readdirSync(dirpath).map(fileName => {
-    const filePath = `${dirpath}/${fileName}`;
-    const { size: fileSize, mtime: dateModified } = fs.statSync(filePath);
-    return {
-      filePath,
-      fileSize,
-      fileName,
-      dateModified
-    };
-  });
-  if (filesInDirectory.length) {
-    return List(filesInDirectory)
-      .sort((a, b) => b.fileSize - a.fileSize)
-      .get(0);
-  } else {
-    return null;
-  }
 };
