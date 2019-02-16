@@ -112,6 +112,7 @@ export const Library = ({
         <MovieList
           movies={scienceFictionHorrorAndFantasy}
           playMovie={playMovie}
+          playTrailer={playTrailer}
         />
       </section>
     )}
