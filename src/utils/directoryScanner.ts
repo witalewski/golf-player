@@ -25,7 +25,7 @@ const loadMovieDetails = async (movieFile: MovieFile, dispatch: Dispatch) => {
   } = await axios.post(
     API_URL,
     JSON.stringify({
-      title: title.replace(/[\.-]/g, " ").replace(/[^a-zA-Z0-9\s]/g, ""),
+      title: title.replace(/-/g, " ").replace(/[^a-zA-Z0-9\s]/g, ""),
       year
     }),
     {
@@ -52,13 +52,9 @@ const isPossibleVideoFile = (name: string, size: number) =>
   size > MIN_MOVIE_FILE_SIZE;
 
 const isPossibleVideoDirectory = (name: string) =>
-  !name.match(/^\./) &&
-  !name.match("Applications") &&
-  !name.match("Music") &&
-  !name.match("Windows") &&
-  !name.match("$Recycle.Bin") &&
-  !name.match("Recovery") &&
-  !name.match("Program Files");
+  !name.match(
+    /(^\.|Applications|Music|Windows|\$Recycle.Bin|Recovery|Program Files)/
+  );
 
 const scanDirectory = (
   path: string,
