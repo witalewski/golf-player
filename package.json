@@ -3,9 +3,17 @@
   "version": "1.0.0",
   "description": "A minimal Electron application",
   "main": "src/main.js",
+  "build": {
+    "appId": "tech.witalewski.golfplayer",
+    "mac": {
+      "category": "video"
+    }
+  },
   "scripts": {
     "start": "yarn build && electron .",
-    "build": "babel src -d lib --extensions \".ts,.tsx,.js\""
+    "build": "babel src -d lib --extensions \".ts,.tsx,.js\"",
+    "pack": "yarn build && electron-builder --dir",
+    "dist": "yarn build && electron-builder"
   },
   "repository": "https://github.com/witalewski/golf-player",
   "keywords": [
@@ -31,7 +39,8 @@
     "@types/react-dom": "^16.0.11",
     "@types/react-redux": "^7.0.1",
     "@types/redux": "^3.6.0",
-    "electron": "^4.0.3"
+    "electron": "^4.0.3",
+    "electron-builder": "^20.38.5"
   },
   "dependencies": {
     "@emotion/core": "^10.0.6",
