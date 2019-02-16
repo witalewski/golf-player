@@ -10,8 +10,10 @@ const skip = (
   if (event.shiftKey) {
     if (event.altKey) {
       videoEl.currentTime += multiplier * 0.04;
-    } else {
+    } else if (event.ctrlKey || event.metaKey) {
       videoEl.currentTime += multiplier * 0.5;
+    } else {
+      videoEl.currentTime += multiplier;
     }
   } else if (event.ctrlKey || event.metaKey) {
     videoEl.currentTime += multiplier * 30;
