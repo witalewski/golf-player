@@ -6,7 +6,7 @@ export enum SortOrder {
 }
 
 export const DEFAULT_DEPTH_LIMIT = 2;
-export const MIN_MOVIE_FILE_SIZE = 80 * 1024 * 1024;
+export const MIN_MOVIE_FILE_SIZE = 80 * 1024 * 1024; // 80 MB
 
 export const API_URL =
   "https://qw6c0mxwz9.execute-api.eu-west-1.amazonaws.com/default/lightswitch";
