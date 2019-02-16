@@ -3,10 +3,7 @@ import fs from "fs";
 import { List } from "immutable";
 import { getUserVolumes } from "./volumesScanner";
 
-const removeHiddenDirs = (items: string[]): string[] =>
-  items.filter(item => !item.match(/^[\.\$]/));
-
-interface Directory {
+interface MovieFile {
   filePath: string;
   fileSize: number;
   fileName: string;
@@ -19,7 +16,7 @@ export const scanDirectory = (
   path: string,
   directoryName: string,
   depthLimit: number = 2
-): Directory[] => {
+): MovieFile[] => {
   console.log("Scanning", `${path}/${directoryName}`);
   try {
     return List(fs.readdirSync(`${path}/${directoryName}`))
@@ -57,7 +54,7 @@ export const scanDirectory = (
   }
 };
 
-export const getMovieDirs = (): Promise<Directory[]> =>
+export const getMovieDirs = (): Promise<MovieFile[]> =>
   new Promise((resolve, reject) =>
     getUserVolumes().then(volumes =>
       resolve(

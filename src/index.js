@@ -2,15 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
-import os from "os";
 import axios from "axios";
 import { MainConnected } from "./components/Main";
 import { receiveDetails } from "./state/actions/libraryActions";
 import { reducers } from "./state/reducers";
 import {
   getMovieDirs,
-  getMovieFile,
-  scanDirectory
 } from "./utils/directoryScanner";
 import { parseDirectoryName } from "./utils/directoryNameParser";
 import { getMovieFromDbData } from "./utils/movieDataConverter";
