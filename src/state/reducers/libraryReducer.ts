@@ -19,7 +19,11 @@ export const libraryReducer = (
     case RECEIVE_DETAILS:
       return {
         ...state,
-        movies: sortMovies(state.movies.push(action.details), state.sortOrder)
+        movies: state.movies.find(
+          movie => movie.fileName === action.details.fileName
+        )
+          ? state.movies
+          : sortMovies(state.movies.push(action.details), state.sortOrder)
       };
     case SORT:
       return {
