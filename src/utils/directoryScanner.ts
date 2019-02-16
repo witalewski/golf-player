@@ -2,6 +2,7 @@ import os from "os";
 import fs from "fs";
 import { List } from "immutable";
 import { getUserVolumes } from "./volumesScanner";
+import { DEFAULT_DEPTH_LIMIT } from "global/constants";
 
 interface MovieFile {
   filePath: string;
@@ -15,7 +16,7 @@ interface MovieFile {
 export const scanDirectory = (
   path: string,
   directoryName: string,
-  depthLimit: number = 2
+  depthLimit: number = DEFAULT_DEPTH_LIMIT
 ): MovieFile[] => {
   console.log("Scanning", `${path}/${directoryName}`);
   try {

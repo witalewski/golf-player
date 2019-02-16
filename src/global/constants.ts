@@ -4,3 +4,8 @@ export enum SortOrder {
   Rating = "Rating",
   Alphabetically = "Alphabetically"
 }
+
+export const DEFAULT_DEPTH_LIMIT = 2;
+export const API_URL =
+  "https://qw6c0mxwz9.execute-api.eu-west-1.amazonaws.com/default/lightswitch";
+export const API_KEY = "S0a5WCywb68N075YgoTVK3TidPB11bus2vplyW9s";

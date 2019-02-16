@@ -6,11 +6,10 @@ import axios from "axios";
 import { MainConnected } from "./components/Main";
 import { receiveDetails } from "./state/actions/libraryActions";
 import { reducers } from "./state/reducers";
-import {
-  getMovieDirs,
-} from "./utils/directoryScanner";
+import { getMovieDirs } from "./utils/directoryScanner";
 import { parseDirectoryName } from "./utils/directoryNameParser";
 import { getMovieFromDbData } from "./utils/movieDataConverter";
+import { API_URL, API_KEY } from "global/constants";
 
 const store = window.hasOwnProperty("__REDUX_DEVTOOLS_EXTENSION__")
   ? createStore(reducers, window["__REDUX_DEVTOOLS_EXTENSION__"]())
@@ -22,14 +21,14 @@ getMovieDirs().then(directories => {
     const { title, year } = parseDirectoryName(directory.directoryName);
     axios
       .post(
-        "https://qw6c0mxwz9.execute-api.eu-west-1.amazonaws.com/default/lightswitch",
+        API_URL,
         JSON.stringify({
           title: title.replace(/[^a-zA-Z0-9\s]/g, ""),
           year
         }),
         {
           headers: {
-            "X-Api-Key": "S0a5WCywb68N075YgoTVK3TidPB11bus2vplyW9s",
+            "X-Api-Key": API_KEY,
             "Content-Type": "application/json"
           }
         }
