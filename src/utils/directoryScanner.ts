@@ -16,10 +16,9 @@ interface MovieFile {
   directoryPath: string;
 }
 
-const loadMovieDetails = async (
-  movieFile: MovieFile,
-  dispatch: (action: { type: string }) => void
-) => {
+type Dispatch = (action: { type: string }) => void;
+
+const loadMovieDetails = async (movieFile: MovieFile, dispatch: Dispatch) => {
   const { title, year } = parseDirectoryName(movieFile.directoryName);
   const {
     data: { omdb, theMovieDb }
@@ -51,7 +50,7 @@ const scanDirectory = (
   path: string,
   directoryName: string,
   depthLimit: number,
-  dispatch
+  dispatch: Dispatch
 ): void => {
   console.log("Scanning", `${path}/${directoryName}`);
   try {
