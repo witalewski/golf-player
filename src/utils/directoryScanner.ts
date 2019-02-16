@@ -18,7 +18,7 @@ interface MovieFile {
   directoryPath: string;
 }
 
-const loadMovieDetails = async (movieFile, store) => {
+const loadMovieDetails = async (movieFile, dispatch) => {
   const { title, year } = parseDirectoryName(movieFile.directoryName);
   const {
     data: { omdb, theMovieDb }
@@ -40,7 +40,7 @@ const loadMovieDetails = async (movieFile, store) => {
     ...movieFile
   };
   if (movie.title) {
-    store.dispatch(receiveMovie(movie));
+    dispatch(receiveMovie(movie));
   } else {
     console.log("Couldn't find match for", title);
   }
@@ -50,7 +50,7 @@ export const scanDirectory = (
   path: string,
   directoryName: string,
   depthLimit: number,
-  store
+  dispatch
 ): void => {
   console.log("Scanning", `${path}/${directoryName}`);
   try {
@@ -58,7 +58,7 @@ export const scanDirectory = (
       const filePath = `${path}/${directoryName}/${item}`;
       const stats: fs.Stats = fs.statSync(filePath);
       if (stats.isDirectory() && depthLimit > 0) {
-        scanDirectory(`${path}/${directoryName}`, item, depthLimit - 1, store);
+        scanDirectory(`${path}/${directoryName}`, item, depthLimit - 1, dispatch);
       }
       if (
         item.match(/(webm|ogg|mp4|avi|mov|flv|wmv|mkv)$/) &&
@@ -73,7 +73,7 @@ export const scanDirectory = (
             directoryName,
             directoryPath: `${path}/${directoryName}`
           },
-          store
+          dispatch
         );
       }
     });
@@ -82,13 +82,13 @@ export const scanDirectory = (
   }
 };
 
-export const getMovieDirs = async (depthLimit, store): Promise<void> => {
+export const getMovieDirs = async (depthLimit, dispatch): Promise<void> => {
   const volumes = await getUserVolumes();
   [
     [os.homedir(), "Movies"],
     [os.homedir(), "Downloads"],
     ...volumes.map(item => ["/Volumes", item])
-  ].forEach(([path, name]) => scanDirectory(path, name, depthLimit, store));
+  ].forEach(([path, name]) => scanDirectory(path, name, depthLimit, dispatch));
 };
 
 export const getMovieFile = (

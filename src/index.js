@@ -11,7 +11,7 @@ const store = window.hasOwnProperty("__REDUX_DEVTOOLS_EXTENSION__")
   ? createStore(reducers, window["__REDUX_DEVTOOLS_EXTENSION__"]())
   : createStore(reducers);
 
-getMovieDirs(DEFAULT_DEPTH_LIMIT, store);
+getMovieDirs(DEFAULT_DEPTH_LIMIT, store.dispatch);
 
 ReactDOM.render(
   <Provider store={store}>
