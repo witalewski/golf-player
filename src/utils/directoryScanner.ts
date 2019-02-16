@@ -25,7 +25,7 @@ const loadMovieDetails = async (movieFile: MovieFile, dispatch: Dispatch) => {
   } = await axios.post(
     API_URL,
     JSON.stringify({
-      title: title.replace(/[^a-zA-Z0-9\s]/g, ""),
+      title: title.replace(/[\.-]/g, " ").replace(/[^a-zA-Z0-9\s]/g, ""),
       year
     }),
     {
@@ -46,6 +46,20 @@ const loadMovieDetails = async (movieFile: MovieFile, dispatch: Dispatch) => {
   }
 };
 
+const isPossibleVideoFile = (name: string, size: number) =>
+  name.match(/(webm|ogg|mp4|avi|mov|flv|wmv|mkv)$/) &&
+  !name.match("SAMPLE") &&
+  size > MIN_MOVIE_FILE_SIZE;
+
+const isPossibleVideoDirectory = (name: string) =>
+  !name.match(/^\./) &&
+  !name.match("Applications") &&
+  !name.match("Music") &&
+  !name.match("Windows") &&
+  !name.match("$Recycle.Bin") &&
+  !name.match("Recovery") &&
+  !name.match("Program Files");
+
 const scanDirectory = (
   path: string,
   directoryName: string,
@@ -57,18 +71,18 @@ const scanDirectory = (
     fs.readdirSync(`${path}/${directoryName}`).forEach(item => {
       const filePath = `${path}/${directoryName}/${item}`;
       const stats: fs.Stats = fs.statSync(filePath);
-      if (stats.isDirectory() && depthLimit > 0) {
+      if (
+        stats.isDirectory() &&
+        isPossibleVideoDirectory(item) &&
+        depthLimit > 0
+      ) {
         scanDirectory(
           `${path}/${directoryName}`,
           item,
           depthLimit - 1,
           dispatch
         );
-      }
-      if (
-        item.match(/(webm|ogg|mp4|avi|mov|flv|wmv|mkv)$/) &&
-        stats.size > MIN_MOVIE_FILE_SIZE
-      ) {
+      } else if (isPossibleVideoFile(item, stats.size)) {
         loadMovieDetails(
           {
             filePath,
