@@ -1,4 +1,4 @@
-import { List } from "immutable";
+import { List, Set } from "immutable";
 import {
   RECEIVE_MOVIE,
   PLAY_TRAILER,
@@ -9,100 +9,157 @@ import {
   CATEGORY_DISPLAY_UPPER_TRESHOLD
 } from "../../global/constants";
 import { sortMovies } from "../../utils/movieSorter";
-import { filterByGenre } from "../../utils/movieFilterer";
+import { GENRE_DISPLAY_LOWER_TRESHOLD } from "../../../lib/global/constants";
+import { MovieCollection, Movie } from "global";
 
 const initialState = {
   trailer: "",
-  allMoviesAlphabetically: List(),
-  recentlyAdded: List(),
-  newReleases: List(),
-  topRates: List(),
-  actionAndAdventure: List(),
-  comedyAndFamily: List(),
-  crimeAndMystery: List(),
-  documetaryAndAnimation: List(),
-  dramaAndRomance: List(),
-  historyAndWar: List(),
-  music: List(),
-  scienceFictionHorrorAndFantasy: List(),
-  thriller: List()
+  movies: Set(),
+  movieCollections: [
+    {
+      label: "Recently Added",
+      movies: List(),
+      genres: [],
+      displayTreshold: 0,
+      limit: CATEGORY_DISPLAY_UPPER_TRESHOLD,
+      sortOrder: SortOrder.RecentlyAdded
+    },
+    {
+      label: "Action & Adventure",
+      movies: List(),
+      genres: ["Action", "Adventure"],
+      displayTreshold: GENRE_DISPLAY_LOWER_TRESHOLD,
+      limit: Infinity,
+      sortOrder: SortOrder.Rating
+    },
+    {
+      label: "Comedy & Family",
+      movies: List(),
+      genres: ["Comedy", "Family"],
+      displayTreshold: GENRE_DISPLAY_LOWER_TRESHOLD,
+      limit: Infinity,
+      sortOrder: SortOrder.Rating
+    },
+    {
+      label: "Crime & Mystery",
+      movies: List(),
+      genres: ["Crime", "Mystery"],
+      displayTreshold: GENRE_DISPLAY_LOWER_TRESHOLD,
+      limit: Infinity,
+      sortOrder: SortOrder.Rating
+    },
+    {
+      label: "Documentary & Animation",
+      movies: List(),
+      genres: ["Documentary", "Animation"],
+      displayTreshold: GENRE_DISPLAY_LOWER_TRESHOLD,
+      limit: Infinity,
+      sortOrder: SortOrder.Rating
+    },
+    {
+      label: "Drama & Romance",
+      movies: List(),
+      genres: ["Drama", "Romance"],
+      displayTreshold: GENRE_DISPLAY_LOWER_TRESHOLD,
+      limit: Infinity,
+      sortOrder: SortOrder.Rating
+    },
+    {
+      label: "History & War",
+      movies: List(),
+      genres: ["History", "War"],
+      displayTreshold: GENRE_DISPLAY_LOWER_TRESHOLD,
+      limit: Infinity,
+      sortOrder: SortOrder.Rating
+    },
+    {
+      label: "Music",
+      movies: List(),
+      genres: ["Music"],
+      displayTreshold: GENRE_DISPLAY_LOWER_TRESHOLD,
+      limit: Infinity,
+      sortOrder: SortOrder.Rating
+    },
+    {
+      label: "Science Fiction, Horror & Fantasy",
+      movies: List(),
+      genres: ["Science Fiction", "Horror", "Fantasy"],
+      displayTreshold: GENRE_DISPLAY_LOWER_TRESHOLD,
+      limit: 0,
+      sortOrder: SortOrder.Rating
+    },
+    {
+      label: "Thrillers",
+      movies: List(),
+      genres: ["Thriller"],
+      displayTreshold: GENRE_DISPLAY_LOWER_TRESHOLD,
+      limit: Infinity,
+      sortOrder: SortOrder.Rating
+    },
+
+    {
+      label: "New Releases",
+      movies: List(),
+      genres: [],
+      displayTreshold: 0,
+      limit: CATEGORY_DISPLAY_UPPER_TRESHOLD,
+      sortOrder: SortOrder.ReleaseDate
+    },
+    {
+      label: "Top Rated",
+      movies: List(),
+      genres: [],
+      displayTreshold: 0,
+      limit: CATEGORY_DISPLAY_UPPER_TRESHOLD,
+      sortOrder: SortOrder.Rating
+    },
+    {
+      label: "All movies",
+      movies: List(),
+      genres: [],
+      displayTreshold: 0,
+      limit: Infinity,
+      sortOrder: SortOrder.Alphabetically
+    }
+  ]
 };
+
+const updateCollection = (
+  collection: MovieCollection,
+  movie: Movie
+): MovieCollection =>
+  !collection.genres.length ||
+  collection.genres.find(genre => movie.genres.indexOf(genre) > -1)
+    ? {
+        ...collection,
+        movies: sortMovies(
+          collection.movies.push(movie),
+          collection.sortOrder
+        ).take(collection.limit)
+      }
+    : collection;
 
 export const libraryReducer = (
   state = initialState,
   action
 ): {
   trailer: string;
-  allMoviesAlphabetically: List<Movie>;
-  recentlyAdded: List<Movie>;
-  newReleases: List<Movie>;
-  topRates: List<Movie>;
-  actionAndAdventure: List<Movie>;
-  comedyAndFamily: List<Movie>;
-  crimeAndMystery: List<Movie>;
-  documetaryAndAnimation: List<Movie>;
-  dramaAndRomance: List<Movie>;
-  historyAndWar: List<Movie>;
-  music: List<Movie>;
-  scienceFictionHorrorAndFantasy: List<Movie>;
-  thriller: List<Movie>;
+  movies: Set<Movie>;
+  movieCollections: MovieCollection[];
 } => {
   switch (action.type) {
     case RECEIVE_MOVIE:
-      const movies = state.allMoviesAlphabetically.find(
+      return state.movies.find(
         movie => movie.fileName === action.movie.fileName
       )
-        ? state.allMoviesAlphabetically
-        : state.allMoviesAlphabetically.push(action.movie);
-      return {
-        ...state,
-        allMoviesAlphabetically: sortMovies(movies, SortOrder.Alphabetically),
-        recentlyAdded: sortMovies(movies, SortOrder.RecentlyAdded).take(
-          CATEGORY_DISPLAY_UPPER_TRESHOLD
-        ),
-        newReleases: sortMovies(movies, SortOrder.ReleaseDate).take(
-          CATEGORY_DISPLAY_UPPER_TRESHOLD
-        ),
-        topRates: sortMovies(movies, SortOrder.Rating).take(
-          CATEGORY_DISPLAY_UPPER_TRESHOLD
-        ),
-        actionAndAdventure: sortMovies(
-          filterByGenre(movies, ["Action", "Adventure"]),
-          SortOrder.RecentlyAdded
-        ),
-        comedyAndFamily: sortMovies(
-          filterByGenre(movies, ["Comedy", "Family"]),
-          SortOrder.RecentlyAdded
-        ),
-        crimeAndMystery: sortMovies(
-          filterByGenre(movies, ["Crime", "Mystery"]),
-          SortOrder.RecentlyAdded
-        ),
-        documetaryAndAnimation: sortMovies(
-          filterByGenre(movies, ["Documentary", "Animation"]),
-          SortOrder.RecentlyAdded
-        ),
-        dramaAndRomance: sortMovies(
-          filterByGenre(movies, ["Drama", "Romance"]),
-          SortOrder.RecentlyAdded
-        ),
-        historyAndWar: sortMovies(
-          filterByGenre(movies, ["History", "War"]),
-          SortOrder.RecentlyAdded
-        ),
-        music: sortMovies(
-          filterByGenre(movies, ["Music"]),
-          SortOrder.RecentlyAdded
-        ),
-        scienceFictionHorrorAndFantasy: sortMovies(
-          filterByGenre(movies, ["Science Fiction", "Horror", "Fantasy"]),
-          SortOrder.RecentlyAdded
-        ),
-        thriller: sortMovies(
-          filterByGenre(movies, ["Thriller"]),
-          SortOrder.RecentlyAdded
-        )
-      };
+        ? state
+        : {
+            ...state,
+            movies: state.movies.add(action.movie),
+            movieCollections: state.movieCollections.map(collection =>
+              updateCollection(collection, action.movie)
+            )
+          };
     case PLAY_TRAILER:
       return {
         ...state,

@@ -1,3 +1,6 @@
+import { List } from "immutable";
+import { SortOrder } from "./global/constants";
+
 interface Movie {
   title: string;
   runtime: number;
@@ -16,6 +19,15 @@ interface Movie {
   dateModified: Date;
   genres: string[];
   trailer: string;
+}
+
+interface MovieCollection {
+  label: string;
+  movies: List<Movie>;
+  genres: string[];
+  displayTreshold: number;
+  limit: number;
+  sortOrder: SortOrder;
 }
 
 interface Subtitles {
