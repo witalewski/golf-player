@@ -1,3 +1,5 @@
+import { Movie } from "global";
+
 export const PLAY_MOVIE = "PLAY_MOVIE";
 export const EXIT_PLAYER = "EXIT_PLAYER";
 

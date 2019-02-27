@@ -8,8 +8,8 @@ import {
   SortOrder,
   CATEGORY_DISPLAY_UPPER_TRESHOLD
 } from "../../global/constants";
-import { sortMovies } from "../../utils/movieSorter";
-import { GENRE_DISPLAY_LOWER_TRESHOLD } from "../../../lib/global/constants";
+import { sortMovies } from "../../utils/movieSorter"
+import { GENRE_DISPLAY_LOWER_TRESHOLD } from "../../global/constants";
 import { MovieCollection, Movie } from "global";
 
 const initialState = {
