@@ -71,6 +71,8 @@ const convertSubs = (
         .pipe(ass2vtt())
         .pipe(fs.createWriteStream(vttPath));
       resolve({ vttPath, language: subsDownloadResult.language });
+    } else {
+      resolve();
     }
   });
 
@@ -90,9 +92,10 @@ export const getSubsForMovie = async (movie: Movie): Promise<Subtitles[]> => {
     if (!subsDownloadResults) {
       return [];
     }
-    return await Promise.all(
+    const results = await Promise.all(
       subsDownloadResults.map(file => convertSubs(file))
     );
+    return results.filter(Boolean);
   } catch (e) {
     logger.error(e);
     return [];
