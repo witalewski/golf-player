@@ -9,7 +9,8 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "baseUrl": "src",
-    "lib": ["es2019"]
+    "lib": ["es2019"],
+    "downlevelIteration": true
   },
   "exclude": ["node_modules"]
 }
