@@ -8,7 +8,7 @@ import {
   SortOrder,
   CATEGORY_DISPLAY_UPPER_TRESHOLD
 } from "../../global/constants";
-import { sortMovies } from "../../utils/movieSorter"
+import { sortMovies } from "../../utils/movieSorter";
 import { GENRE_DISPLAY_LOWER_TRESHOLD } from "../../global/constants";
 import { MovieCollection, Movie } from "global";
 
@@ -16,87 +16,6 @@ const initialState = {
   trailer: "",
   movies: Set(),
   movieCollections: [
-    {
-      label: "Recently Added",
-      movies: List(),
-      genres: [],
-      displayTreshold: 0,
-      limit: CATEGORY_DISPLAY_UPPER_TRESHOLD,
-      sortOrder: SortOrder.RecentlyAdded
-    },
-    {
-      label: "Action & Adventure",
-      movies: List(),
-      genres: ["Action", "Adventure"],
-      displayTreshold: GENRE_DISPLAY_LOWER_TRESHOLD,
-      limit: Infinity,
-      sortOrder: SortOrder.Rating
-    },
-    {
-      label: "Comedy & Family",
-      movies: List(),
-      genres: ["Comedy", "Family"],
-      displayTreshold: GENRE_DISPLAY_LOWER_TRESHOLD,
-      limit: Infinity,
-      sortOrder: SortOrder.Rating
-    },
-    {
-      label: "Crime & Mystery",
-      movies: List(),
-      genres: ["Crime", "Mystery"],
-      displayTreshold: GENRE_DISPLAY_LOWER_TRESHOLD,
-      limit: Infinity,
-      sortOrder: SortOrder.Rating
-    },
-    {
-      label: "Documentary & Animation",
-      movies: List(),
-      genres: ["Documentary", "Animation"],
-      displayTreshold: GENRE_DISPLAY_LOWER_TRESHOLD,
-      limit: Infinity,
-      sortOrder: SortOrder.Rating
-    },
-    {
-      label: "Drama & Romance",
-      movies: List(),
-      genres: ["Drama", "Romance"],
-      displayTreshold: GENRE_DISPLAY_LOWER_TRESHOLD,
-      limit: Infinity,
-      sortOrder: SortOrder.Rating
-    },
-    {
-      label: "History & War",
-      movies: List(),
-      genres: ["History", "War"],
-      displayTreshold: GENRE_DISPLAY_LOWER_TRESHOLD,
-      limit: Infinity,
-      sortOrder: SortOrder.Rating
-    },
-    {
-      label: "Music",
-      movies: List(),
-      genres: ["Music"],
-      displayTreshold: GENRE_DISPLAY_LOWER_TRESHOLD,
-      limit: Infinity,
-      sortOrder: SortOrder.Rating
-    },
-    {
-      label: "Science Fiction, Horror & Fantasy",
-      movies: List(),
-      genres: ["Science Fiction", "Horror", "Fantasy"],
-      displayTreshold: GENRE_DISPLAY_LOWER_TRESHOLD,
-      limit: 0,
-      sortOrder: SortOrder.Rating
-    },
-    {
-      label: "Thrillers",
-      movies: List(),
-      genres: ["Thriller"],
-      displayTreshold: GENRE_DISPLAY_LOWER_TRESHOLD,
-      limit: Infinity,
-      sortOrder: SortOrder.Rating
-    },
-
     {
       label: "New Releases",
       movies: List(),
