@@ -7,6 +7,7 @@ import { getMovieFromDbData } from "./movieDataConverter";
 import { API_URL, API_KEY, MIN_MOVIE_FILE_SIZE } from "../global/constants";
 import { receiveMovie } from "../state/actions/libraryActions";
 import { logger } from "./logger";
+import { db, find } from "../db/connect";
 
 interface MovieFile {
   filePath: string;
@@ -21,25 +22,32 @@ type Dispatch = (action: { type: string }) => void;
 
 const loadMovieDetails = async (movieFile: MovieFile, dispatch: Dispatch) => {
   const { title, year } = parseDirectoryName(movieFile.directoryName);
-  const {
-    data: { omdb, theMovieDb }
-  } = await axios.post(
-    API_URL,
-    JSON.stringify({
-      title: title.replace(/-/g, " ").replace(/[^a-zA-Z0-9\s]/g, ""),
-      year
-    }),
-    {
-      headers: {
-        "X-Api-Key": API_KEY,
-        "Content-Type": "application/json"
+  let [movie] = await find(movieFile);
+
+  if (!movie) {
+    const {
+      data: { omdb, theMovieDb }
+    } = await axios.post(
+      API_URL,
+      JSON.stringify({
+        title: title.replace(/-/g, " ").replace(/[^a-zA-Z0-9\s]/g, ""),
+        year
+      }),
+      {
+        headers: {
+          "X-Api-Key": API_KEY,
+          "Content-Type": "application/json"
+        }
       }
-    }
-  );
-  const movie = {
-    ...getMovieFromDbData(omdb, theMovieDb),
-    ...movieFile
-  };
+    );
+    movie = {
+      ...getMovieFromDbData(omdb, theMovieDb),
+      ...movieFile
+    };
+  } else {
+    logger.info(`Found ${movieFile.directoryName} in cache`);
+  }
+  db.insert(movie);
   if (movie.title) {
     dispatch(receiveMovie(movie));
   } else {

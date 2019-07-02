@@ -51,6 +51,7 @@
     "drivelist": "^7.0.1",
     "gunzip-file": "^0.1.1",
     "immutable": "^4.0.0-rc.12",
+    "nedb": "^1.8.0",
     "react": "^16.8.0-alpha.1",
     "react-dom": "^16.8.0-alpha.1",
     "react-redux": "^6.0.0",
