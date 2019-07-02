@@ -20,8 +20,18 @@ interface MovieFile {
 
 type Dispatch = (action: { type: string }) => void;
 
+const doTitlesMatch = (searchTitle: string, resultTitle: string): boolean =>
+  resultTitle
+    .replace(/\W/g, "")
+    .toUpperCase()
+    .includes(searchTitle.replace(/\W/g, "").toUpperCase());
+
 const loadMovieDetails = async (movieFile: MovieFile, dispatch: Dispatch) => {
-  const { title, year } = parseDirectoryName(movieFile.directoryName);
+  const { title, year } = parseDirectoryName(
+    isRelevantDirectParent(movieFile.directoryName)
+      ? movieFile.directoryName
+      : movieFile.fileName
+  );
   let [movie] = await find(movieFile);
 
   if (!movie) {
@@ -48,7 +58,7 @@ const loadMovieDetails = async (movieFile: MovieFile, dispatch: Dispatch) => {
     logger.info(`Found ${movieFile.directoryName} in cache`);
   }
   db.insert(movie);
-  if (movie.title) {
+  if (movie.title && doTitlesMatch(title, movie.title)) {
     dispatch(receiveMovie(movie));
   } else {
     logger.error(`Couldn't find match for ${title}`);
@@ -60,10 +70,13 @@ const isPossibleVideoFile = (name: string, size: number) =>
   !name.match("SAMPLE") &&
   size > MIN_MOVIE_FILE_SIZE;
 
-const isPossibleVideoDirectory = (name: string) =>
-  !name.match(
+const isPossibleVideoDirectory = (directoryName: string) =>
+  !directoryName.match(
     /(^\.|Applications|Music|Windows|\$Recycle.Bin|Recovery|Program Files)/
   );
+
+const isRelevantDirectParent = (directoryName: string): boolean =>
+  !directoryName.match(/(^\.|Downloads|Movies)/);
 
 const scanDirectory = (
   path: string,
