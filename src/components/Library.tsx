@@ -5,7 +5,6 @@ import { Header } from "./Header";
 import { playMovie } from "../state/actions/playerActions";
 import { playTrailer, hideTrailer } from "../state/actions/libraryActions";
 import { MovieList } from "./MovieList";
-import { GENRE_DISPLAY_LOWER_TRESHOLD } from "../global/constants";
 import { MovieCollection, Movie } from "global";
 import { List } from "immutable";
 import { sortMovies } from "../utils/movieSorter";
@@ -63,7 +62,7 @@ const getCategories = movies => {
           movie.genres.some(genre => category.includes(genre))
         )
       ),
-      SortOrder.Rating
+      SortOrder.RecentlyAdded
     )
   }));
 };

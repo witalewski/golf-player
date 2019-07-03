@@ -9,7 +9,6 @@ import {
   CATEGORY_DISPLAY_UPPER_TRESHOLD
 } from "../../global/constants";
 import { sortMovies } from "../../utils/movieSorter";
-import { GENRE_DISPLAY_LOWER_TRESHOLD } from "../../global/constants";
 import { MovieCollection, Movie } from "global";
 
 const initialState = {
@@ -19,24 +18,18 @@ const initialState = {
     {
       label: "New Releases",
       movies: List(),
-      genres: [],
-      displayTreshold: 0,
       limit: CATEGORY_DISPLAY_UPPER_TRESHOLD,
       sortOrder: SortOrder.ReleaseDate
     },
     {
       label: "Top Rated",
       movies: List(),
-      genres: [],
-      displayTreshold: 0,
       limit: CATEGORY_DISPLAY_UPPER_TRESHOLD,
       sortOrder: SortOrder.Rating
     },
     {
       label: "All movies",
       movies: List(),
-      genres: [],
-      displayTreshold: 0,
       limit: Infinity,
       sortOrder: SortOrder.Alphabetically
     }
@@ -46,17 +39,12 @@ const initialState = {
 const updateCollection = (
   collection: MovieCollection,
   movie: Movie
-): MovieCollection =>
-  !collection.genres.length ||
-  collection.genres.find(genre => movie.genres.indexOf(genre) > -1)
-    ? {
-        ...collection,
-        movies: sortMovies(
-          collection.movies.push(movie),
-          collection.sortOrder
-        ).take(collection.limit)
-      }
-    : collection;
+): MovieCollection => ({
+  ...collection,
+  movies: sortMovies(collection.movies.push(movie), collection.sortOrder).take(
+    collection.limit
+  )
+});
 
 export const libraryReducer = (
   state = initialState,

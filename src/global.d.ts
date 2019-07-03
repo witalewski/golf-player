@@ -24,8 +24,6 @@ interface Movie {
 interface MovieCollection {
   label: string;
   movies: List<Movie>;
-  genres: string[];
-  displayTreshold: number;
   limit: number;
   sortOrder: SortOrder;
 }
