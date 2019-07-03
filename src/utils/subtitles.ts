@@ -4,6 +4,7 @@ import gunzip from "gunzip-file";
 import srt2vtt from "srt2vtt";
 import ass2vtt from "ass-to-vtt";
 import { logger } from "./logger";
+import { Movie, Subtitles } from "global";
 
 interface ISubsSearchResult {
   LanguageName: string;
@@ -76,26 +77,58 @@ const convertSubs = (
     }
   });
 
+export const getSubtitlesLanguage = filename => {
+  if (filename.toUpperCase().match(/\.EN\.|ENGLISH/)) {
+    return "English";
+  }
+  if (filename.toUpperCase().match(/\.PL\.|POLISH/)) {
+    return "Polish";
+  }
+  return "Unknown";
+};
+
 export const getSubsForMovie = async (movie: Movie): Promise<Subtitles[]> => {
   try {
-    const subsSearchResults: ISubsSearchResult[] = await searchForSubs(
-      movie.filePath
-    );
-    if (!subsSearchResults) {
-      return [];
+    const items = fs.readdirSync(movie.directoryPath);
+    if (items.some(item => item.match(/\.vtt$/))) {
+      return items
+        .filter(item => item.match(/\.vtt$/))
+        .map(item => ({
+          vttPath: `${movie.directoryPath}/${item}`,
+          language: getSubtitlesLanguage(item)
+        }));
+    } else if (items.some(item => item.match(/\.srt$|\.ass/))) {
+      const results = await Promise.all(
+        items
+          .filter(item => item.match(/\.srt$|\.ass$/))
+          .map(item =>
+            convertSubs({
+              file: `${movie.directoryPath}/${item}`,
+              language: getSubtitlesLanguage(item)
+            })
+          )
+      );
+      return results.filter(Boolean);
+    } else {
+      const subsSearchResults: ISubsSearchResult[] = await searchForSubs(
+        movie.filePath
+      );
+      if (!subsSearchResults) {
+        return [];
+      }
+      const subsDownloadResults: ISubsDownloadResult[] = await Promise.all(
+        subsSearchResults.map(subsItem =>
+          downloadSubs(subsItem, movie.directoryPath)
+        )
+      );
+      if (!subsDownloadResults) {
+        return [];
+      }
+      const results = await Promise.all(
+        subsDownloadResults.map(file => convertSubs(file))
+      );
+      return results.filter(Boolean);
     }
-    const subsDownloadResults: ISubsDownloadResult[] = await Promise.all(
-      subsSearchResults.map(subsItem =>
-        downloadSubs(subsItem, movie.directoryPath)
-      )
-    );
-    if (!subsDownloadResults) {
-      return [];
-    }
-    const results = await Promise.all(
-      subsDownloadResults.map(file => convertSubs(file))
-    );
-    return results.filter(Boolean);
   } catch (e) {
     logger.error(e);
     return [];
