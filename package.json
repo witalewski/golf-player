@@ -39,7 +39,7 @@
     "@types/react-dom": "^16.0.11",
     "@types/react-redux": "^7.0.1",
     "@types/redux": "^3.6.0",
-    "electron": "^4.0.3",
+    "electron": "^7.2.4",
     "electron-builder": "^20.38.5"
   },
   "dependencies": {
