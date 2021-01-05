@@ -47,7 +47,7 @@
     "@emotion/styled": "^10.0.6",
     "@types/react": "^16.8.1",
     "ass-to-vtt": "^1.2.0",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "drivelist": "^7.0.1",
     "gunzip-file": "^0.1.1",
     "immutable": "^4.0.0-rc.12",
